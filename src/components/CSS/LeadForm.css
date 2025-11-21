@@ -1,0 +1,80 @@
+.Lead-Form {
+    background-color: #f8f9f9;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 6px;
+    max-width: 900px; /* Wider for two columns */
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+}
+
+.Lead-Form h3 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.Lead-Form h4 {
+    color: #006400;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.Lead-Form .form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.Lead-Form .form-group {
+    flex: 1;
+    min-width: 220px;
+    display: flex;
+    flex-direction: column;
+}
+
+.Lead-Form label {
+    margin-bottom: 4px;
+    font-size: 0.9rem;
+}
+
+.Lead-Form input,
+.Lead-Form select,
+.Lead-Form textarea {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.Lead-Form textarea {
+    resize: vertical;
+}
+
+.Lead-Form button[type="submit"] {
+    background-color: #228B22;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.Lead-Form button[type="submit"]:hover {
+    background-color: #196619;
+}
+
+.Lead-Form input:focus,
+.Lead-Form select:focus,
+.Lead-Form textarea:focus {
+    outline: none;
+    border-color: #228B22;
+    box-shadow: 0 0 3px #228B22;
+}

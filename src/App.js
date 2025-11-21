@@ -4,6 +4,7 @@ import Hierarchy from "./components/User/Hierarchy";
 import Demo1 from "./components/Ecommerce/Demo";
 import CRM from "./components/User/CRM";
 import LeadFom from "./components/Sales_Marketing/LeadFom";
+import LeadList from "./components/Sales_Marketing/LeadList";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/hierarchy" element={<Hierarchy />} />
         <Route path="/CRM" element={<CRM /> } />
         <Route path="/leadForm" element={<LeadFom /> } />
+        <Route path="/leadList" element={<LeadList /> } />
         <Route path="/demo" element={<Demo1 />} />
       </Routes>
     </Router>
