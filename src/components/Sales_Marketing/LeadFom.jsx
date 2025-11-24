@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BASE_URL } from '../services/leadService';
 import axios from 'axios';
 import '../CSS/LeadForm.css';
-import {Country,State} from 'country-state-city';
+import { Country, State } from 'country-state-city';
 
 function LeadForm() {
   const initialState = {
@@ -35,6 +35,59 @@ function LeadForm() {
   const [errors, setErrors] = useState({});
   const countries = Country.getAllCountries();
   const states = State.getStatesOfCountry(form.country);
+
+  const sourceOptions = [
+    "Website Enquiry",
+    "Social Media",
+    "LinkedIn",
+    "Facebook",
+    "Instagram",
+    "Google Search",
+    "Cold Call",
+    "Reference",
+    "Existing Customer",
+    "WhatsApp",
+    "Email Campaign",
+    "Field Visit",
+    "Trade Show / Expo",
+    "Partner / Distributor",
+    "Other"
+  ];
+
+  const requirementOptions = [
+    "VMS & CCTV",
+    "VMS",
+    "CCTV",
+    "VMS+CC",
+    "CC",
+    "ACS",
+    "ITC & Networking",
+    "CCTV & CC",
+    "CCTV & FAS",
+    "Bollards",
+    "ELV",
+    "AELV",
+    "Networking",
+    "CCTV"
+  ]
+
+  const categoryOptions = [
+    "Service",
+    "Product",
+    "Service & Product"
+  ]
+
+  const stageOptions = [
+    "New",
+    "Discussion",
+    "Demo",
+    "Proposal",
+    "Decided",
+    "Negotiation",
+    "On Hold",
+    "Lost",
+    "Won"
+  ];
 
 
   const handleChange = (e) => {
@@ -217,29 +270,37 @@ function LeadForm() {
 
         <h4>Business Opportunity</h4>
         <div className="form-row">
-          <div className="form-group">
-            <label>Source *</label>
-            <input name="source" value={form.source} onChange={handleChange} />
-            {errors.source && <span className="error">{errors.source}</span>}
-          </div>
+          <select name="source" value={form.source} onChange={handleChange}>
+            <option value="">Select Source</option>
+            {sourceOptions.map(src => (
+              <option key={src} value={src}>{src}</option>
+            ))}
+          </select>
+          {errors.source && <span className="error">{errors.source}</span>}
 
           <div className="form-group">
             <label>Since</label>
-            <input name="since" value={form.since} onChange={handleChange} />
+            <input type="date" name="since" value={form.since} onChange={handleChange} />
           </div>
         </div>
 
         <div className="form-row">
-          <div className="form-group">
-            <label>Requirement *</label>
-            <input name="requirement" value={form.requirement} onChange={handleChange} />
-            {errors.requirement && <span className="error">{errors.requirement}</span>}
-          </div>
-          <div className="form-group">
-            <label>Category *</label>
-            <input name="category" value={form.category} onChange={handleChange} />
-            {errors.category && <span className="error">{errors.category}</span>}
-          </div>
+          <select name="requirement" value={form.requirement} onChange={handleChange}>
+            <option value="">Select Requirement</option>
+            {requirementOptions.map(req => (
+              <option key={req} value={req}>{req}</option>
+            ))}
+          </select>
+          {errors.requirement && <span className="error">{errors.requirement}</span>}
+
+          <select name="category" value={form.category} onChange={handleChange}>
+            <option value="">Select Category</option>
+            {categoryOptions.map(cat => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
+          {errors.category && <span className="error">{errors.category}</span>}
+
         </div>
 
         <div className="form-row">
@@ -265,10 +326,13 @@ function LeadForm() {
         </div>
 
         <div className="form-row">
-          <div className="form-group">
-            <label>Stage</label>
-            <input name="stage" value={form.stage} onChange={handleChange} />
-          </div>
+          <select name="stage" value={form.stage} onChange={handleChange}>
+            <option value="">Select Stage</option>
+            {stageOptions.map(stg => (
+              <option key={stg} value={stg}>{stg}</option>
+            ))}
+          </select>
+
           <div className="form-group">
             <label>Tags</label>
             <input name="tags" value={form.tags} onChange={handleChange} />
