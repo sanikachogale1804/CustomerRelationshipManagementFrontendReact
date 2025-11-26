@@ -1,0 +1,139 @@
+/* Login.module.css */
+
+/* Wrapper for the whole login page */
+.loginPageBackground {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #e3f2fd, #ffffff, #bbdefb);
+  background-size: 300% 300%;
+  animation: bgMove 12s ease infinite;
+}
+
+/* Keyframes for gradient animation */
+@keyframes bgMove {
+  0% { background-position: 0 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+/* Login card wrapper */
+.loginWrapper {
+  width: 430px;
+  text-align: center;
+}
+
+/* Brand section */
+.brandBox {
+  margin-bottom: 20px;
+  animation: fadeDown 1s ease;
+}
+
+.logo {
+  width: 120px;
+  border-radius: 10px;
+  filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.25));
+}
+
+.companyName {
+  margin-top: 12px;
+  color: #0d47a1;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.tagline {
+  color: #1e88e5;
+  font-size: 14px;
+  margin-top: 4px;
+  font-style: italic;
+}
+
+/* Login card */
+.loginCard {
+  background: #ffffff;
+  padding: 35px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  animation: popUp 0.8s ease;
+}
+
+.loginCard h2 {
+  color: #0d47a1;
+  margin-bottom: 18px;
+  font-size: 25px;
+}
+
+/* Input groups */
+.inputGroup {
+  position: relative;
+  margin: 14px 0;
+}
+
+.inputGroup i {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #1976d2;
+}
+
+.inputGroup input {
+  width: 100%;
+  padding: 14px 14px 14px 44px;
+  border: 1px solid #90caf9;
+  border-radius: 10px;
+  background: #eaf4ff;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.inputGroup input:focus {
+  background: #ffffff;
+  border-color: #42a5f5;
+  box-shadow: 0 0 6px rgba(33,150,243,0.4);
+  outline: none;
+}
+
+/* Login button */
+.loginBtn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #42a5f5, #1e88e5);
+  color: white;
+  font-size: 17px;
+  font-weight: 600;
+  margin-top: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.links {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.links a {
+  font-size: 13px;
+  text-decoration: none;
+  color: #0d47a1;
+  font-weight: 500;
+}
+
+/* Animations */
+@keyframes popUp {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

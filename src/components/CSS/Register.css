@@ -1,0 +1,211 @@
+/* ---------- Global Styling ---------- */
+* {
+    box-sizing: border-box; 
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #e3f2fd, #ffffff, #bbdefb);
+    background-size: 300% 300%;
+    animation: bgMove 12s ease infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+@keyframes bgMove {
+    0% { background-position: 0 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0 50%; }
+}
+
+/* ---------- Wrapper ---------- */
+.wrapper {
+    width: 100%;
+    max-width: 600px; /* ensures it fits all screens */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ---------- Branding Section ---------- */
+.brand-section {
+    text-align: center;
+    margin-bottom: 25px;
+    animation: fadeDown 1s ease;
+}
+
+.register-logo {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.brand-section h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #0d47a1;
+    margin-bottom: 5px;
+}
+
+.tagline {
+    font-size: 14px;
+    color: #1e88e5;
+    font-style: italic;
+}
+
+/* ---------- Register / Login Box ---------- */
+.register-container {
+    width: 100%;
+    padding: 35px 30px;
+    background: #ffffffcc;
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+    animation: popUp 0.8s ease;
+}
+
+/* Headline */
+.register-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #0d47a1;
+    font-size: 24px;
+}
+
+/* ---------- Input Fields with Icons ---------- */
+.input-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    padding: 14px 15px 14px 45px; /* left padding for icon */
+    font-size: 15px;
+    border-radius: 12px;
+    border: 2px solid #90caf9;
+    outline: none;
+    background: #f0f8ff;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    border-color: #42a5f5;
+    box-shadow: 0 0 10px rgba(66,165,245,0.4);
+    background: #ffffff;
+}
+
+/* ---------- Input Icons ---------- */
+.input-group .icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #42a5f5;
+    font-size: 16px;
+}
+
+/* Placeholder color */
+.input-group input::placeholder,
+.input-group select::placeholder {
+    color: #90a4ae;
+}
+
+/* ---------- Submit Button ---------- */
+.btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    background: linear-gradient(135deg, #42a5f5, #1e88e5);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.25);
+}
+
+.btn:active::after {
+    content: "";
+    position: absolute;
+    width: 300%;
+    height: 300%;
+    left: 50%;
+    top: 50%;
+    background: rgba(255,255,255,0.4);
+    transform: translate(-50%,-50%) scale(0);
+    border-radius: 50%;
+    animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+    to { transform: translate(-50%,-50%) scale(1); opacity: 0; }
+}
+
+/* ---------- Login/Register Redirect Link ---------- */
+.login-link {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.login-link a {
+    color: #1e88e5;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* ---------- Animations ---------- */
+@keyframes popUp {
+    from { transform: scale(0.85); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Mobile Responsive ---------- */
+@media (max-width: 768px) {
+    .register-container {
+        padding: 30px 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .register-container {
+        padding: 25px 20px;
+    }
+
+    .brand-section h1 {
+        font-size: 22px;
+    }
+
+    .logo {
+        width: 80px;
+        height: 80px;
+    }
+}
