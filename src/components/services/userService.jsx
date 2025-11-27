@@ -1,10 +1,35 @@
 import axios from "axios";
 
 export const fetchUsers = async () => {
-    const res = await fetch("http://localhost:8080/users");
+    const res = await fetch("http://localhost:8080/users", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+            "Content-Type": "application/json"
+        }
+    });
+
+    if (!res.ok) {
+        console.error("Server returned error:", res.status);
+        return [];
+    }
+
     const data = await res.json();
-    return data._embedded ? data._embedded.users : [];
-}
+
+    // HATEOAS format
+    if (data._embedded && data._embedded.users) {
+        return data._embedded.users;
+    }
+
+    // If user returns list directly
+    if (Array.isArray(data)) {
+        return data;
+    }
+
+    return [];
+};
+
 
 export const getParentsId = (user) => {
     if (!user.reportingTo) return null;
@@ -13,15 +38,15 @@ export const getParentsId = (user) => {
 }
 
 export const registerUser = async (data) => {
-  const response = await fetch("http://localhost:8080/register", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    credentials: "include",   // IMPORTANT
-    body: JSON.stringify(data)
-  });
-  return response.json();
+    const response = await fetch("http://localhost:8080/register", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include",   // IMPORTANT
+        body: JSON.stringify(data)
+    });
+    return response.json();
 };
 
 

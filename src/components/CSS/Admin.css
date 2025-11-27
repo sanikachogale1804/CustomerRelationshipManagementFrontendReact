@@ -1,0 +1,237 @@
+/* GLOBAL RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: #e9f1ff;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* MAIN CONTAINER */
+.admin-container {
+  display: flex;
+  height: 100vh; /* full viewport height */
+  width: 100%;
+  background: #e9f1ff;
+  overflow: hidden;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 260px;
+  background: linear-gradient(180deg, #4db5ff, #0f2763);
+  color: white;
+  padding: 25px 18px;
+  box-shadow: 3px 0px 12px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Logo */
+.logo-section {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.company-logo-free {
+  width: 125px;
+  filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.35));
+}
+
+.company-name {
+  margin-top: 12px;
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+/* MENU AS BUTTONS */
+.menu-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.menu-item {
+  list-style: none;
+}
+
+.menu-item a {
+  display: block;
+  width: 100%;
+  padding: 12px 20px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.15);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(3px);
+  box-shadow: 0px 3px 6px rgba(0,0,0,0.15);
+}
+
+.menu-item a:hover {
+  background: rgba(255,255,255,0.3);
+  transform: translateX(8px);
+  box-shadow: 0px 6px 12px rgba(0,0,0,0.25);
+}
+
+/* MAIN CONTENT */
+.main-content {
+  flex: 1; /* takes remaining width */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* full height */
+  padding: 25px;
+  background: #e9f1ff;
+  overflow-y: auto;
+}
+
+/* TOP BAR */
+.top-bar {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(15px);
+  border-radius: 14px;
+  padding: 18px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 6px 15px rgba(0,0,0,0.12);
+  border-left: 6px solid #4db5ff;
+  margin-bottom: 20px;
+}
+
+/* DEPARTMENT LEFT BOX */
+.dept-left-box {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.dept-label {
+  font-size: 18px;
+  color: #0f2763;
+  font-weight: 700;
+}
+
+/* DEPARTMENT DROPDOWN */
+.departments-dropdown {
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 2px solid #4db5ff;
+  background: linear-gradient(135deg, #dbeeff, #eff7ff);
+  color: #0f2763;
+  font-size: 15px;
+  font-weight: 600;
+  transition: 0.3s;
+  outline: none;
+}
+
+.departments-dropdown:hover {
+  border-color: #0f2763;
+  background: #d3e9ff;
+  cursor: pointer;
+}
+
+.departments-dropdown:focus {
+  border-color: #0f2763;
+  box-shadow: 0px 0px 12px rgba(77,181,255,0.7);
+}
+
+/* RIGHT BUTTONS */
+.top-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.notif-btn,
+.profile-btn {
+  padding: 10px 22px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #4db5ff, #0f2763);
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.18);
+}
+
+.notif-btn:hover,
+.profile-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 7px 16px rgba(0,0,0,0.25);
+}
+
+/* POPUPS */
+.notif-popup,
+.profile-popup {
+  position: absolute;
+  right: 25px;
+  top: 72px;
+  background: white;
+  padding: 18px;
+  width: 220px;
+  border-radius: 14px;
+  box-shadow: 0px 10px 25px rgba(0,0,0,0.25);
+  animation: fadeIn 0.25s ease-out;
+  border-left: 5px solid #4db5ff;
+}
+
+.notif-popup p {
+  margin-bottom: 0;
+  color: #0f2763;
+  font-weight: 600;
+}
+
+.profile-popup button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #4db5ff;
+  color: white;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.profile-popup button:hover {
+  background: #0f2763;
+}
+
+/* PAGE CONTENT */
+.page-content {
+  background: white;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0px 6px 18px rgba(0,0,0,0.08);
+  flex: 1; /* stretch to fill available space */
+  min-height: 0; /* flexbox fix for overflow */
+  overflow-y: auto; /* scroll if content too long */
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

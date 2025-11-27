@@ -1,0 +1,80 @@
+/* Container */
+.manage-container {
+  padding: 25px;
+  background: #f8f9fc;
+  min-height: 100vh;
+}
+
+/* Title */
+.manage-title {
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #1a237e;
+}
+
+/* Loading text */
+.loading-text {
+  font-size: 18px;
+  color: #444;
+}
+
+/* Table */
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Head */
+.user-table thead {
+  background: #1e88e5;
+  color: white;
+}
+
+.user-table th {
+  padding: 12px;
+  font-size: 15px;
+  text-align: left;
+}
+
+/* Table Body */
+.user-table td {
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 14px;
+}
+
+.user-table tr:hover {
+  background: #f1f5ff;
+  transition: 0.2s;
+}
+
+/* No Data */
+.no-data {
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+}
+
+/* Edit button */
+.edit-btn {
+  background: #1565c0;
+  color: white;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.edit-btn:hover {
+  background: #0d47a1;
+  transform: scale(1.05);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+}
