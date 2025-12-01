@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const API_URL = "http://localhost:8080/users";
+
 export const fetchUsers = async () => {
     const res = await fetch("http://localhost:8080/users", {
         method: "GET",
@@ -68,4 +70,23 @@ export const loginUser = async (credentials) => {
         console.error("Login Failed:", error);
         throw error;
     }
+};
+
+
+export const updateUser = async (id, userData) => {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("No token found. Please login.");
+
+    const response = await axios.put(
+        `http://localhost:8080/users/${id}`,
+        userData,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+        }
+    );
+
+    return response.data;
 };

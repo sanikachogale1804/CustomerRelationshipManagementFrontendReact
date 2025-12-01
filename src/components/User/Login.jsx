@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../CSS/Auth.module.css"; 
+import styles from "../CSS/Login.module.css"; 
 import logo from '../Images/logo.png';
 import { loginUser } from "../services/userService";
 
@@ -18,7 +18,7 @@ function Login() {
       const response = await loginUser(form);
       if (response) {
         localStorage.setItem("token", response);
-        window.location.href = "/CRM";
+        window.location.href = "/admin";
       } else {
         setError("Invalid Login Response");
       }

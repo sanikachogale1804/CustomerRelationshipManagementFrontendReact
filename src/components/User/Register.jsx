@@ -1,262 +1,162 @@
-import React, { useState } from "react";
-import styles from "../CSS/Auth.module.css"; 
-import logo from "../Images/logo.png";
-import { registerUser } from "../services/userService";
+import React from "react";
+import styles from "../CSS/Auth.module.css";
 
-const initialState = {
-  employeeId: "",
-  fullName: "",
-  username: "",
-  password: "",
-  designation: "",
-  mobileNo: "",
-  dateOfBirth: "",
-  dateOfJoining: "",
-  workLocation: "",
-  Department: "",
-  Role: "",
-  payrollType: "",
-  employmentType: "",
-};
-
-const Register = () => {
-  const [form, setForm] = useState(initialState);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
-    try {
-      await registerUser(form);
-      setSuccess("Registration successful!");
-      setForm(initialState);
-    } catch (err) {
-      setError("Registration failed. Please try again.");
-    }
-  };
-
+export default function Register() {
   return (
     <div className={styles.authPageBackground}>
       <div className={styles.authWrapper}>
-        <div className={styles.brandBox}>
-          <img src={logo} alt="Logo" className={styles.brandLogo} />
-          <h1 className={styles.companyName}>Cogent Safety & Security Pvt Ltd</h1>
-          <p className={styles.tagline}>Our Business Is To Protect Yours</p>
-        </div>
-
         <div className={styles.authCard}>
           <h2>Create an Account</h2>
-          <form onSubmit={handleSubmit}>
-            {/** Employee ID */}
-            <div className={styles.inputGroup}>
-              <i className="fa fa-user-tie"></i>
-              <input
-                type="text"
-                name="employeeId"
-                value={form.employeeId}
-                onChange={handleChange}
-                placeholder="Employee ID"
-                required
-              />
+
+          <form>
+
+            {/* Employee ID */}
+            <div className={styles.formRow}>
+              <label>Employee ID</label>
+              <div className={styles.inputBox}>
+                <i className="fa fa-user-tie"></i>
+                <input type="text" placeholder="Employee ID" required />
+              </div>
             </div>
 
-            {/** Full Name */}
-            <div className={styles.inputGroup}>
-              <i className="fa fa-user"></i>
-              <input
-                type="text"
-                name="fullName"
-                value={form.fullName}
-                onChange={handleChange}
-                placeholder="Full Name"
-                required
-              />
+            {/* Full Name */}
+            <div className={styles.formRow}>
+              <label>Full Name</label>
+              <div className={styles.inputBox}>
+                <i className="fa fa-user"></i>
+                <input type="text" placeholder="Full Name" required />
+              </div>
             </div>
 
-            {/** Username */}
-            <div className={styles.inputGroup}>
-              <i className="fa fa-user-circle"></i>
-              <input
-                type="text"
-                name="username"
-                value={form.username}
-                onChange={handleChange}
-                placeholder="Username"
-                required
-              />
+            {/* Email */}
+            <div className={styles.formRow}>
+              <label>Email ID</label>
+              <div className={styles.inputBox}>
+                <i className="fa fa-envelope"></i>
+                <input type="email" placeholder="Company Email ID" required />
+              </div>
             </div>
 
-            {/** Password */}
-            <div className={styles.inputGroup}>
-              <i className="fa fa-lock"></i>
-              <input
-                type="password"
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                placeholder="Password"
-                required
-              />
+            {/* Username */}
+            <div className={styles.formRow}>
+              <label>Username</label>
+              <div className={styles.inputBox}>
+                <i className="fa fa-user-circle"></i>
+                <input type="text" placeholder="Username" required />
+              </div>
             </div>
 
-            {/** Designation */}
-            <div className={styles.inputGroup}>
-              <i className="fa fa-id-badge"></i>
-              <input
-                type="text"
-                name="designation"
-                value={form.designation}
-                onChange={handleChange}
-                placeholder="Designation"
-                required
-              />
+            {/* Password */}
+            <div className={styles.formRow}>
+              <label>Password</label>
+              <div className={styles.inputBox}>
+                <i className="fa fa-lock"></i>
+                <input type="password" placeholder="Password" required />
+              </div>
             </div>
 
-            {/** Mobile Number */}
-            <div className={styles.inputGroup}>
-              <i className="fa fa-phone"></i>
-              <input
-                type="number"
-                name="mobileNo"
-                value={form.mobileNo}
-                onChange={handleChange}
-                placeholder="Mobile Number"
-                required
-              />
+            {/* Designation */}
+            <div className={styles.formRow}>
+              <label>Designation</label>
+              <div className={styles.inputBox}>
+                <i className="fa fa-id-badge"></i>
+                <input type="text" placeholder="Designation" required />
+              </div>
             </div>
 
-            {/** Date of Birth */}
-            <div className={styles.inputGroup}>
-              <i className="fa fa-calendar"></i>
-              <input
-                type="date"
-                name="dateOfBirth"
-                value={form.dateOfBirth}
-                onChange={handleChange}
-                required
-              />
+            {/* Mobile */}
+            <div className={styles.formRow}>
+              <label>Mobile Number</label>
+              <div className={styles.inputBox}>
+                <i className="fa fa-phone"></i>
+                <input type="number" placeholder="Mobile Number" required />
+              </div>
             </div>
 
-            {/** Date of Joining */}
-            <div className={styles.inputGroup}>
-              <i className="fa fa-calendar-check"></i>
-              <input
-                type="date"
-                name="dateOfJoining"
-                value={form.dateOfJoining}
-                onChange={handleChange}
-                required
-              />
+            {/* DOB */}
+            <div className={styles.formRow}>
+              <label>Date of Birth</label>
+              <div className={styles.inputBox}>
+                <i className="fa fa-calendar"></i>
+                <input type="date" required />
+              </div>
             </div>
 
-            {/** Work Location */}
-            <div className={styles.inputGroup}>
-              <i className="fa fa-map-marker-alt"></i>
-              <select
-                name="workLocation"
-                value={form.workLocation}
-                onChange={handleChange}
-                required
-              >
-                <option value="" disabled>Select Work Location</option>
-                <option value="Mumbai">Mumbai</option>
-                <option value="Pune">Pune</option>
-                <option value="Nashik">Nashik</option>
-                <option value="Delhi">Delhi</option>
-                <option value="Other">Other</option>
-              </select>
+            {/* DOJ */}
+            <div className={styles.formRow}>
+              <label>Date of Joining</label>
+              <div className={styles.inputBox}>
+                <i className="fa fa-calendar-check"></i>
+                <input type="date" required />
+              </div>
             </div>
 
-            {/** Department */}
-            <div className={styles.inputGroup}>
-              <i className="fa fa-building"></i>
-              <select
-                name="Department"
-                value={form.Department}
-                onChange={handleChange}
-                required
-              >
-                <option value="" disabled>Select Department</option>
-                <option value="HR">HR</option>
-                <option value="Operations">Operations</option>
-                <option value="Technical">Technical</option>
-                <option value="Finance">Finance</option>
-                <option value="IT">IT</option>
-              </select>
+            {/* Work Location */}
+            <div className={styles.formRow}>
+              <label>Work Location</label>
+              <div className={styles.inputBox}>
+                <i className="fa fa-map-marker-alt"></i>
+                <select required>
+                  <option disabled selected>Select Work Location</option>
+                  <option>Mumbai</option>
+                  <option>Hyderabad</option>
+                  <option>Delhi</option>
+                  <option>Bangalore</option>
+                </select>
+              </div>
             </div>
 
-            {/** Role */}
-            <div className={styles.inputGroup}>
-              <i className="fa fa-user-tie"></i>
-              <select
-                name="Role"
-                value={form.Role}
-                onChange={handleChange}
-                required
-              >
-                <option value="" disabled>Select Role</option>
-                <option value="Admin">Admin</option>
-                <option value="Manager">Manager</option>
-                <option value="Executive">Executive</option>
-                <option value="Field Officer">Field Officer</option>
-                <option value="Security Guard">Security Guard</option>
-              </select>
+            {/* Department */}
+            <div className={styles.formRow}>
+              <label>Department</label>
+              <div className={styles.inputBox}>
+                <i className="fa fa-building"></i>
+                <select required>
+                  <option disabled selected>Select Department</option>
+                  <option>HR</option>
+                  <option>Operations</option>
+                  <option>IT</option>
+                  <option>Finance</option>
+                </select>
+              </div>
             </div>
 
-            {/** Payroll Type */}
-            <div className={styles.inputGroup}>
-              <i className="fa fa-money-bill"></i>
-              <select
-                name="payrollType"
-                value={form.payrollType}
-                onChange={handleChange}
-                required
-              >
-                <option value="" disabled>Select Payroll Type</option>
-                <option value="Monthly">Monthly</option>
-                <option value="Weekly">Weekly</option>
-                <option value="Daily">Daily</option>
-              </select>
+            {/* Payroll */}
+            <div className={styles.formRow}>
+              <label>Payroll Type</label>
+              <div className={styles.inputBox}>
+                <i className="fa fa-money-bill"></i>
+                <select required>
+                  <option disabled selected>Select Payroll</option>
+                  <option>Monthly</option>
+                  <option>Weekly</option>
+                  <option>Daily</option>
+                </select>
+              </div>
             </div>
 
-            {/** Employment Type */}
-            <div className={styles.inputGroup}>
-              <i className="fa fa-briefcase"></i>
-              <select
-                name="employmentType"
-                value={form.employmentType}
-                onChange={handleChange}
-                required
-              >
-                <option value="" disabled>Employment Type</option>
-                <option value="Full-Time">Full-Time</option>
-                <option value="Part-Time">Part-Time</option>
-                <option value="Contract">Contract</option>
-                <option value="Temporary">Temporary</option>
-              </select>
+            {/* Employment Type */}
+            <div className={styles.formRow}>
+              <label>Employment Type</label>
+              <div className={styles.inputBox}>
+                <i className="fa fa-briefcase"></i>
+                <select required>
+                  <option disabled selected>Employment Type</option>
+                  <option>Full-Time</option>
+                  <option>Part-Time</option>
+                  <option>Contract</option>
+                </select>
+              </div>
             </div>
 
-            {/** Submit Button */}
-            <button type="submit" className={styles.authBtn}>Register</button>
+            {/* Submit */}
+            <button type="submit" className={styles.authBtn}>
+              Register
+            </button>
 
-            {error && <p style={{color:"red"}}>{error}</p>}
-            {success && <p style={{color:"green"}}>{success}</p>}
-
-            <p className={styles.authLink}>
-              Already have an account? <a href="/login">Login</a>
-            </p>
           </form>
         </div>
       </div>
     </div>
   );
-};
-
-export default Register;
+}
