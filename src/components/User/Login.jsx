@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../CSS/Login.module.css"; 
+import styles from "../CSS/Login.module.css";
 import logo from '../Images/logo.png';
 import { loginUser } from "../services/userService";
 
@@ -20,25 +20,30 @@ function Login() {
         localStorage.setItem("token", response);
         window.location.href = "/admin";
       } else {
-        setError("Invalid Login Response");
+        setError("Invalid Credentials");
       }
     } catch {
-      setError("Invalid Username or Password");
+      setError("Invalid Credentials");
     }
   };
 
   return (
-    <div className={styles.authPageBackground}>
-      <div className={styles.authWrapper}>
+    <div className={styles.authPageBackground}> {/* FULL SCREEN BACKGROUND */}
+      <div className={styles.loginWrapper}> {/* Wrapper */}
+        
+        {/* Brand Section */}
         <div className={styles.brandBox}>
-          <img src={logo} className={styles.brandLogo} alt="Logo" />
+          <img src={logo} className={styles.logo} alt="Company Logo" />
           <h1 className={styles.companyName}>Cogent Safety & Security Pvt Ltd</h1>
           <p className={styles.tagline}>Our Business Is To Protect Yours</p>
         </div>
 
-        <div className={styles.authCard}>
+        {/* Login Card */}
+        <div className={styles.loginCard}>
           <h2>Login</h2>
           <form onSubmit={handleSubmit}>
+            
+            {/* Username */}
             <div className={styles.inputGroup}>
               <i className="fa fa-user"></i>
               <input
@@ -50,6 +55,8 @@ function Login() {
                 required
               />
             </div>
+
+            {/* Password */}
             <div className={styles.inputGroup}>
               <i className="fa fa-lock"></i>
               <input
@@ -61,8 +68,18 @@ function Login() {
                 required
               />
             </div>
-            <button type="submit" className={styles.authBtn}>Login</button>
-            {error && <p style={{color:'red', marginTop:'10px'}}>{error}</p>}
+
+            {/* Submit Button */}
+            <button type="submit" className={styles.loginBtn}>Login</button>
+
+            {/* Links */}
+            <div className={styles.links}>
+              <a href="#">Forgot Password?</a>
+              <a href="#">Contact Admin</a>
+            </div>
+
+            {/* Error Message */}
+            {error && <p style={{ color: "red", marginTop: "10px", textAlign: "center" }}>{error}</p>}
           </form>
         </div>
       </div>

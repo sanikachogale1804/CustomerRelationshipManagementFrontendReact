@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchUsers, updateUser } from "../services/userService";
 import "../CSS/ManageUsers.css";
+import { useNavigate } from "react-router-dom";
 
 function ManageUsers() {
   const [users, setUsers] = useState([]);
@@ -8,6 +9,7 @@ function ManageUsers() {
 
   const [editUser, setEditUser] = useState(null); // selected user for editing
   const [formData, setFormData] = useState({});   // form values
+  const navigate = useNavigate();
 
   // Load all users
   const loadUsers = async () => {
@@ -93,10 +95,15 @@ function ManageUsers() {
                     <td>{user.designation}</td>
                     <td>{user.reportingTo ? user.reportingTo.href.split("/").pop() : "None"}</td>
                     <td>
-                      <button className="edit-btn" onClick={() => handleEdit(user)}>
+                      <button
+                        className="edit-btn"
+                        onClick={() => navigate(`/admin/settings/manage-users-edit/${userId}`)}
+                      >
                         ✏️ Edit
                       </button>
+
                     </td>
+
                   </tr>
                 );
               })

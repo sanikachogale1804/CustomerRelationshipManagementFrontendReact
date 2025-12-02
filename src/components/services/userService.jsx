@@ -39,17 +39,28 @@ export const getParentsId = (user) => {
     return parseInt(parts[parts.length - 1]);
 }
 
-export const registerUser = async (data) => {
-    const response = await fetch("http://localhost:8080/register", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        credentials: "include",   // IMPORTANT
-        body: JSON.stringify(data)
+export const registerUser = async (formDataObj) => {
+  try {
+    const formData = new FormData();
+
+    // Append all fields dynamically
+    for (const key in formDataObj) {
+      if (formDataObj[key] !== null && formDataObj[key] !== "") {
+        formData.append(key, formDataObj[key]);
+      }
+    }
+
+    const response = await axios.post("http://localhost:8080/register", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
     });
-    return response.json();
+
+    return response.data;
+  } catch (error) {
+    console.error("Error in registerUser:", error.response || error.message);
+    throw error;
+  }
 };
+
 
 
 export const loginUser = async (credentials) => {
@@ -90,3 +101,12 @@ export const updateUser = async (id, userData) => {
 
     return response.data;
 };
+
+
+export const updatePassword = async (data) => {
+    const token = localStorage.getItem("token");
+    const config = { headers: { Authorization: `Bearer ${token}` } };
+    const response = await axios.put("http://localhost:8080/users/change-password", data, config);
+    return response.data;
+
+}

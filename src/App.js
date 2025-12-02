@@ -12,6 +12,8 @@ import AdminDashboard from "./components/Admin/AdminDashboard";
 import Reports from "./components/Admin/Reports";
 import Settings from "./components/Admin/Settings";
 import ManageUsers from "./components/Admin/ManageUsers";
+import ChangePassword from "./components/Admin/ChangePassword";
+import ManageUserEdit from "./components/Admin/ManageUserEdit";
 
 function App() {
   return (
@@ -25,13 +27,14 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/permission" element={<Permission />} />
-        // App.js
         <Route path="/admin" element={<AdminDashboard />}>
           <Route path="reports" element={<Reports />} />
           <Route path="settings" element={<Settings />} />
           <Route path="settings/create-user" element={<Register />} />
           <Route path="settings/manage-permissions" element={<Permission />} />
-          <Route path="settings/manage-users" element={<ManageUsers />}/>
+          <Route path="settings/manage-users" element={<ManageUsers />} />
+          <Route path="settings/manage-users-edit/:id" element={<ManageUserEdit />} />
+          <Route path="settings/change-password" element={<ChangePassword />} />
         </Route>
 
 

@@ -1,21 +1,118 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "../CSS/Auth.module.css";
+import { registerUser } from "../services/userService";
 
 export default function Register() {
+  // Dynamic options
+  const [designations, setDesignations] = useState(["HR", "Operations", "IT", "Finance"]);
+  const [departments, setDepartments] = useState(["HR", "Operations", "IT", "Finance"]);
+  const [payrolls, setPayrolls] = useState(["Monthly", "Weekly", "Daily"]);
+  const [employmentTypes, setEmploymentTypes] = useState(["Full-Time", "Part-Time", "Contract"]);
+
+  const [formData, setFormData] = useState({
+    employeeId: "",
+    fullName: "",
+    email: "",
+    username: "",
+    password: "",
+    designation: "",
+    mobileNo: "",
+    dob: "",
+    doj: "",
+    workLocation: "",
+    department: "",
+    payroll: "",
+    employmentType: "",
+    aadharCard: null,
+    panCard: null,
+    photo: null
+  });
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    if (files) {
+      setFormData({ ...formData, [name]: files[0] });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
+
+  // Add new option dynamically
+  const handleAddOption = (type) => {
+    const newValue = prompt(`Enter new ${type}:`);
+    if (!newValue) return;
+
+    switch (type) {
+      case "Designation":
+        setDesignations([...designations, newValue]);
+        setFormData({ ...formData, designation: newValue });
+        break;
+      case "Department":
+        setDepartments([...departments, newValue]);
+        setFormData({ ...formData, department: newValue });
+        break;
+      case "Payroll":
+        setPayrolls([...payrolls, newValue]);
+        setFormData({ ...formData, payroll: newValue });
+        break;
+      case "Employment Type":
+        setEmploymentTypes([...employmentTypes, newValue]);
+        setFormData({ ...formData, employmentType: newValue });
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const result = await registerUser(formData);
+      console.log("User Registered:", result);
+      alert("User Registered Successfully!");
+      // Optionally, reset form
+      setFormData({
+        employeeId: "",
+        fullName: "",
+        email: "",
+        username: "",
+        password: "",
+        designation: "",
+        mobileNo: "",
+        dob: "",
+        doj: "",
+        workLocation: "",
+        department: "",
+        payroll: "",
+        employmentType: "",
+        aadharCard: null,
+        panCard: null,
+        photo: null,
+        certificate: null
+      });
+    } catch (error) {
+      console.error("Registration Error:", error);
+      alert("Failed to register user: " + (error.response?.data || error.message));
+    }
+  };
+
+
   return (
     <div className={styles.authPageBackground}>
       <div className={styles.authWrapper}>
         <div className={styles.authCard}>
           <h2>Create an Account</h2>
 
-          <form>
+          <form onSubmit={handleSubmit}>
 
             {/* Employee ID */}
             <div className={styles.formRow}>
               <label>Employee ID</label>
               <div className={styles.inputBox}>
                 <i className="fa fa-user-tie"></i>
-                <input type="text" placeholder="Employee ID" required />
+                <input type="text" name="employeeId" placeholder="Employee ID" required onChange={handleChange} />
               </div>
             </div>
 
@@ -24,7 +121,7 @@ export default function Register() {
               <label>Full Name</label>
               <div className={styles.inputBox}>
                 <i className="fa fa-user"></i>
-                <input type="text" placeholder="Full Name" required />
+                <input type="text" name="fullName" placeholder="Full Name" required onChange={handleChange} />
               </div>
             </div>
 
@@ -33,7 +130,7 @@ export default function Register() {
               <label>Email ID</label>
               <div className={styles.inputBox}>
                 <i className="fa fa-envelope"></i>
-                <input type="email" placeholder="Company Email ID" required />
+                <input type="email" name="email" placeholder="Company Email ID" required onChange={handleChange} />
               </div>
             </div>
 
@@ -42,7 +139,7 @@ export default function Register() {
               <label>Username</label>
               <div className={styles.inputBox}>
                 <i className="fa fa-user-circle"></i>
-                <input type="text" placeholder="Username" required />
+                <input type="text" name="username" placeholder="Username" required onChange={handleChange} />
               </div>
             </div>
 
@@ -51,16 +148,20 @@ export default function Register() {
               <label>Password</label>
               <div className={styles.inputBox}>
                 <i className="fa fa-lock"></i>
-                <input type="password" placeholder="Password" required />
+                <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
               </div>
             </div>
 
-            {/* Designation */}
+            {/* Designation with plus button */}
             <div className={styles.formRow}>
               <label>Designation</label>
               <div className={styles.inputBox}>
                 <i className="fa fa-id-badge"></i>
-                <input type="text" placeholder="Designation" required />
+                <select name="designation" value={formData.designation} onChange={handleChange} required>
+                  <option value="">Select Designation</option>
+                  {designations.map((d, idx) => <option key={idx} value={d}>{d}</option>)}
+                </select>
+                <button type="button" className={styles.addBtn} onClick={() => handleAddOption("Designation")}>➕</button>
               </div>
             </div>
 
@@ -69,7 +170,7 @@ export default function Register() {
               <label>Mobile Number</label>
               <div className={styles.inputBox}>
                 <i className="fa fa-phone"></i>
-                <input type="number" placeholder="Mobile Number" required />
+                <input type="number" name="mobileNo" placeholder="Mobile Number" required onChange={handleChange} />
               </div>
             </div>
 
@@ -78,7 +179,7 @@ export default function Register() {
               <label>Date of Birth</label>
               <div className={styles.inputBox}>
                 <i className="fa fa-calendar"></i>
-                <input type="date" required />
+                <input type="date" name="dob" required onChange={handleChange} />
               </div>
             </div>
 
@@ -87,7 +188,7 @@ export default function Register() {
               <label>Date of Joining</label>
               <div className={styles.inputBox}>
                 <i className="fa fa-calendar-check"></i>
-                <input type="date" required />
+                <input type="date" name="doj" required onChange={handleChange} />
               </div>
             </div>
 
@@ -96,8 +197,8 @@ export default function Register() {
               <label>Work Location</label>
               <div className={styles.inputBox}>
                 <i className="fa fa-map-marker-alt"></i>
-                <select required>
-                  <option disabled selected>Select Work Location</option>
+                <select name="workLocation" value={formData.workLocation} onChange={handleChange} required>
+                  <option value="">Select Work Location</option>
                   <option>Mumbai</option>
                   <option>Hyderabad</option>
                   <option>Delhi</option>
@@ -106,54 +207,69 @@ export default function Register() {
               </div>
             </div>
 
-            {/* Department */}
+            {/* Department with plus button */}
             <div className={styles.formRow}>
               <label>Department</label>
               <div className={styles.inputBox}>
                 <i className="fa fa-building"></i>
-                <select required>
-                  <option disabled selected>Select Department</option>
-                  <option>HR</option>
-                  <option>Operations</option>
-                  <option>IT</option>
-                  <option>Finance</option>
+                <select name="department" value={formData.department} onChange={handleChange} required>
+                  <option value="">Select Department</option>
+                  {departments.map((d, idx) => <option key={idx} value={d}>{d}</option>)}
                 </select>
+                <button type="button" className={styles.addBtn} onClick={() => handleAddOption("Department")}>➕</button>
               </div>
             </div>
 
-            {/* Payroll */}
+            {/* Payroll with plus */}
             <div className={styles.formRow}>
               <label>Payroll Type</label>
               <div className={styles.inputBox}>
                 <i className="fa fa-money-bill"></i>
-                <select required>
-                  <option disabled selected>Select Payroll</option>
-                  <option>Monthly</option>
-                  <option>Weekly</option>
-                  <option>Daily</option>
+                <select name="payroll" value={formData.payroll} onChange={handleChange} required>
+                  <option value="">Select Payroll</option>
+                  {payrolls.map((p, idx) => <option key={idx} value={p}>{p}</option>)}
                 </select>
+                <button type="button" className={styles.addBtn} onClick={() => handleAddOption("Payroll")}>➕</button>
               </div>
             </div>
 
-            {/* Employment Type */}
+            {/* Employment Type with plus */}
             <div className={styles.formRow}>
               <label>Employment Type</label>
               <div className={styles.inputBox}>
                 <i className="fa fa-briefcase"></i>
-                <select required>
-                  <option disabled selected>Employment Type</option>
-                  <option>Full-Time</option>
-                  <option>Part-Time</option>
-                  <option>Contract</option>
+                <select name="employmentType" value={formData.employmentType} onChange={handleChange} required>
+                  <option value="">Select Employment Type</option>
+                  {employmentTypes.map((e, idx) => <option key={idx} value={e}>{e}</option>)}
                 </select>
+                <button type="button" className={styles.addBtn} onClick={() => handleAddOption("Employment Type")}>➕</button>
               </div>
             </div>
 
-            {/* Submit */}
-            <button type="submit" className={styles.authBtn}>
-              Register
-            </button>
+            {/* File uploads */}
+            <div className={styles.formRow}>
+              <label>Aadhar Card</label>
+              <input type="file" name="aadharCard" accept=".pdf,.jpg,.png" onChange={handleChange} />
+            </div>
 
+            <div className={styles.formRow}>
+              <label>PAN Card</label>
+              <input type="file" name="panCard" accept=".pdf,.jpg,.png" onChange={handleChange} />
+            </div>
+
+            <div className={styles.formRow}>
+              <label>Photo</label>
+              <input type="file" name="photo" accept=".jpg,.png" onChange={handleChange} />
+            </div>
+
+            <div className={styles.formRow}> 
+              <label>Certificate</label>
+              <input type="file" name="certificate" accept=".pdf,.jpg,.png" onChange={handleChange}/>
+
+            </div>
+
+            {/* Submit */}
+            <button type="submit" className={styles.authBtn}>Register</button>
           </form>
         </div>
       </div>
