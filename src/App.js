@@ -7,13 +7,14 @@ import LeadFom from "./components/Sales_Marketing/LeadFom";
 import LeadList from "./components/Sales_Marketing/LeadList";
 import Register from "./components/User/Register";
 import Login from "./components/User/Login";
-import Permission from "./components/User/Permission";
+
 import AdminDashboard from "./components/Admin/AdminDashboard";
 import Reports from "./components/Admin/Reports";
 import Settings from "./components/Admin/Settings";
 import ManageUsers from "./components/Admin/ManageUsers";
 import ChangePassword from "./components/Admin/ChangePassword";
 import ManageUserEdit from "./components/Admin/ManageUserEdit";
+import Permission from "./components/Admin/Permission";
 
 function App() {
   return (

@@ -40,122 +40,90 @@ function ManageUsers() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Call backend to update user
   const handleUpdate = async () => {
-    try {
-      if (!editUser.id) {
-        alert("User ID is missing!");
-        return;
-      }
+    if (!editUser?.id) return alert("User ID is missing!");
 
-      await updateUser(editUser.id, formData);
+    const payload = { ...formData };
+
+    // reportingTo
+    if (!payload.reportingTo || payload.reportingTo === "") {
+      payload.reportingTo = null;
+    } else {
+      payload.reportingTo = { id: payload.reportingTo };
+    }
+
+    // For image paths: if empty string, set to null
+    if (!payload.photoPath) payload.photoPath = null;
+    if (!payload.aadharCardPath) payload.aadharCardPath = null;
+    if (!payload.certificatePath) payload.certificatePath = null;
+    if (!payload.panCardPath) payload.panCardPath = null;
+
+    try {
+      await updateUser(editUser.id, payload);
       alert("User updated successfully!");
       setEditUser(null);
       loadUsers();
-    } catch (error) {
-      console.error("Error updating user:", error);
-      alert("Failed to update user. Check console for details.");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update user. Check console.");
     }
   };
 
-  return (
-    <div className="manage-container">
-      <h2 className="manage-title">Manage Users</h2>
 
-      {loading ? (
-        <p className="loading-text">Loading users...</p>
-      ) : (
-        <table className="user-table">
-          <thead>
+ return (
+  <div className="manage-container">
+    <h2 className="manage-title">Manage Users</h2>
+
+    {loading ? (
+      <p className="loading-text">Loading users...</p>
+    ) : (
+      <table className="user-table" border={1}>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Full Name</th>
+            <th>Username</th>
+            <th>Mobile</th>
+            <th>Designation</th>
+            <th>Reporting To</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {users.length === 0 ? (
             <tr>
-              <th>ID</th>
-              <th>Full Name</th>
-              <th>Username</th>
-              <th>Mobile</th>
-              <th>Designation</th>
-              <th>Reporting To</th>
-              <th>Action</th>
+              <td colSpan="7" className="no-data">No users found</td>
             </tr>
-          </thead>
+          ) : (
+            users.map((user) => {
+              const userId = user._links.self.href.split("/").pop();
+              return (
+                <tr key={userId}>
+                  <td>{userId}</td>
+                  <td>{user.fullName}</td>
+                  <td>{user.username}</td>
+                  <td>{user.mobileNo}</td>
+                  <td>{user.designation}</td>
+                  <td>{user.reportingTo ? user.reportingTo.href.split("/").pop() : "None"}</td>
+                  <td>
+                    <button
+                      className="edit-btn"
+                      onClick={() => navigate(`/admin/settings/manage-users-edit/${userId}`)}
+                    >
+                      ✏️ Edit
+                    </button>
+                  </td>
+                </tr>
+              );
+            })
+          )}
+        </tbody>
+      </table>
+    )}
+  </div>
+);
 
-          <tbody>
-            {users.length === 0 ? (
-              <tr>
-                <td colSpan="7" className="no-data">No users found</td>
-              </tr>
-            ) : (
-              users.map((user) => {
-                const userId = user._links.self.href.split("/").pop();
-                return (
-                  <tr key={userId}>
-                    <td>{userId}</td>
-                    <td>{user.fullName}</td>
-                    <td>{user.username}</td>
-                    <td>{user.mobileNo}</td>
-                    <td>{user.designation}</td>
-                    <td>{user.reportingTo ? user.reportingTo.href.split("/").pop() : "None"}</td>
-                    <td>
-                      <button
-                        className="edit-btn"
-                        onClick={() => navigate(`/admin/settings/manage-users-edit/${userId}`)}
-                      >
-                        ✏️ Edit
-                      </button>
-
-                    </td>
-
-                  </tr>
-                );
-              })
-            )}
-          </tbody>
-        </table>
-      )}
-
-      {/* EDIT USER MODAL */}
-      {editUser && (
-        <div className="modal-overlay">
-          <div className="modal-box">
-            <h3>Edit User</h3>
-
-            <label>Full Name</label>
-            <input
-              name="fullName"
-              value={formData.fullName || ""}
-              onChange={handleChange}
-            />
-
-            <label>Username</label>
-            <input
-              name="username"
-              value={formData.username || ""}
-              onChange={handleChange}
-            />
-
-            <label>Mobile</label>
-            <input
-              name="mobileNo"
-              value={formData.mobileNo || ""}
-              onChange={handleChange}
-            />
-
-            <label>Designation</label>
-            <input
-              name="designation"
-              value={formData.designation || ""}
-              onChange={handleChange}
-            />
-
-            <div className="btn-row">
-              <button className="save-btn" onClick={handleUpdate}>Update</button>
-              <button className="cancel-btn" onClick={() => setEditUser(null)}>Cancel</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-    </div>
-  );
 }
 
 export default ManageUsers;

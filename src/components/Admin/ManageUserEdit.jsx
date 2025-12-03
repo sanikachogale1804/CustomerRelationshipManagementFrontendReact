@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchUsers, updateUser } from "../services/userService";
-import "../CSS/Register.css"; // You can reuse the register/login CSS
+import "../CSS/ManageUsersEdit.css"
 
 function ManageUserEdit() {
   const { id } = useParams(); // user id from URL
@@ -12,7 +12,11 @@ function ManageUserEdit() {
     username: "",
     mobileNo: "",
     designation: "",
-    reportingTo: ""
+    reportingTo: "",
+    photoPath: "",
+    aadharCardPath: "",
+    certificatePath: "",
+    panCardPath: ""
   });
   const [loading, setLoading] = useState(true);
 
@@ -20,7 +24,7 @@ function ManageUserEdit() {
   useEffect(() => {
     const loadUser = async () => {
       try {
-        const users = await fetchUsers(); // fetch all users
+        const users = await fetchUsers();
         const user = users.find(u => u._links.self.href.split("/").pop() === id);
         if (user) {
           setFormData({
@@ -28,11 +32,15 @@ function ManageUserEdit() {
             username: user.username || "",
             mobileNo: user.mobileNo || "",
             designation: user.designation || "",
-            reportingTo: user.reportingTo ? user.reportingTo.href.split("/").pop() : ""
+            reportingTo: user.reportingTo ? user.reportingTo.href.split("/").pop() : "",
+            photoPath: user.photoPath || "",
+            aadharCardPath: user.aadharCardPath || "",
+            certificatePath: user.certificatePath || "",
+            panCardPath: user.panCardPath || ""
           });
         } else {
           alert("User not found");
-          navigate("/manage-users");
+          // navigate("/manage-users");
         }
       } catch (err) {
         console.error(err);
@@ -50,68 +58,69 @@ function ManageUserEdit() {
   };
 
   const handleUpdate = async () => {
+    const payload = { ...formData };
+
+    // Convert reportingTo
+    if (!payload.reportingTo || payload.reportingTo === "") {
+      payload.reportingTo = null;
+    } else {
+      payload.reportingTo = { id: payload.reportingTo };
+    }
+
+    // For image paths: convert empty strings to null
+    if (!payload.photoPath) payload.photoPath = null;
+    if (!payload.aadharCardPath) payload.aadharCardPath = null;
+    if (!payload.certificatePath) payload.certificatePath = null;
+    if (!payload.panCardPath) payload.panCardPath = null;
+
     try {
-      await updateUser(id, formData);
+      await updateUser(id, payload);
       alert("User updated successfully!");
-      navigate("/manage-users");
+      // navigate("/manage-users");
     } catch (err) {
       console.error(err);
-      alert("Failed to update user");
+      alert("Failed to update user. Check console.");
     }
   };
 
-  if (loading) return <p style={{textAlign: "center"}}>Loading...</p>;
+  if (loading) return <p style={{ textAlign: "center" }}>Loading...</p>;
 
   return (
     <div className="authPageBackground">
       <div className="loginWrapper">
-        <h2 style={{textAlign:"center", marginBottom:"20px"}}>Edit User</h2>
+        <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Edit User</h2>
 
-        {/* Form Fields */}
         <div className="loginCard">
           <label>Full Name</label>
-          <input
-            name="fullName"
-            value={formData.fullName}
-            onChange={handleChange}
-          />
+          <input name="fullName" value={formData.fullName} onChange={handleChange} />
 
           <label>Username</label>
-          <input
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-          />
+          <input name="username" value={formData.username} onChange={handleChange} />
 
           <label>Mobile Number</label>
-          <input
-            name="mobileNo"
-            value={formData.mobileNo}
-            onChange={handleChange}
-          />
+          <input name="mobileNo" value={formData.mobileNo} onChange={handleChange} />
 
           <label>Designation</label>
-          <input
-            name="designation"
-            value={formData.designation}
-            onChange={handleChange}
-          />
+          <input name="designation" value={formData.designation} onChange={handleChange} />
 
           <label>Reporting To (User ID)</label>
-          <input
-            name="reportingTo"
-            value={formData.reportingTo}
-            onChange={handleChange}
-          />
+          <input name="reportingTo" value={formData.reportingTo} onChange={handleChange} />
+
+          {/* Optional: show image paths if needed */}
+          <label>Photo Path</label>
+          <input name="photoPath" value={formData.photoPath || ""} onChange={handleChange} />
+
+          <label>Aadhar Card Path</label>
+          <input name="aadharCardPath" value={formData.aadharCardPath || ""} onChange={handleChange} />
+
+          <label>Certificate Path</label>
+          <input name="certificatePath" value={formData.certificatePath || ""} onChange={handleChange} />
+
+          <label>PAN Card Path</label>
+          <input name="panCardPath" value={formData.panCardPath || ""} onChange={handleChange} />
 
           <button className="loginBtn" onClick={handleUpdate}>Update User</button>
-          <button
-            className="loginBtn"
-            style={{marginTop:"10px", background:"#ccc", color:"#000"}}
-            onClick={() => navigate("/manage-users")}
-          >
-            Cancel
-          </button>
+          <button className="loginBtn" style={{ marginTop: "10px" }} onClick={() => navigate("settings/manage-users")}>Cancel</button>
         </div>
       </div>
     </div>
