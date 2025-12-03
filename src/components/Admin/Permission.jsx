@@ -5,6 +5,7 @@ import {
   updatePermission,
   deletePermission
 } from "../services/userService";
+import "../CSS/Permission.css"; // import CSS
 
 function Permission() {
   const [permissions, setPermissions] = useState([]);
@@ -12,7 +13,6 @@ function Permission() {
   const [formData, setFormData] = useState({ permissionName: "", description: "" });
   const [editingId, setEditingId] = useState(null);
 
-  // Fetch permissions
   const fetchPermissions = async () => {
     setLoading(true);
     try {
@@ -25,9 +25,7 @@ function Permission() {
     }
   };
 
-  useEffect(() => {
-    fetchPermissions();
-  }, []);
+  useEffect(() => { fetchPermissions(); }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,31 +34,21 @@ function Permission() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.permissionName.trim()) {
-      alert("Permission name is required");
-      return;
-    }
-
+    if (!formData.permissionName.trim()) { alert("Permission name is required"); return; }
     try {
       if (editingId) {
         const updatedPermission = await updatePermission(editingId, formData);
         alert("Permission updated successfully!");
-        setPermissions((prev) =>
-          prev.map((perm) =>
-            perm.id === editingId ? updatedPermission : perm
-          )
-        );
+        setPermissions((prev) => prev.map((perm) => perm.id === editingId ? updatedPermission : perm));
       } else {
         const newPerm = await addPermission(formData);
         alert("Permission added successfully!");
         setPermissions((prev) => [...prev, newPerm]);
       }
-
       setFormData({ permissionName: "", description: "" });
       setEditingId(null);
     } catch (error) {
-      alert("Operation failed. See console for details.");
-      console.error(error);
+      alert("Operation failed. See console for details."); console.error(error);
     }
   };
 
@@ -76,8 +64,7 @@ function Permission() {
         setPermissions((prev) => prev.filter((p) => p.id !== id));
         alert("Permission deleted successfully!");
       } catch (error) {
-        alert("Failed to delete permission");
-        console.error(error);
+        alert("Failed to delete permission"); console.error(error);
       }
     }
   };
@@ -85,18 +72,16 @@ function Permission() {
   if (loading) return <p>Loading permissions...</p>;
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="permission-container">
       <h2>Manage Permissions</h2>
 
-      {/* Add/Edit form */}
-      <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
+      <form onSubmit={handleSubmit} className="permission-form">
         <input
           type="text"
           name="permissionName"
           placeholder="Permission Name"
           value={formData.permissionName}
           onChange={handleChange}
-          style={{ marginRight: "10px" }}
         />
         <input
           type="text"
@@ -104,28 +89,23 @@ function Permission() {
           placeholder="Description"
           value={formData.description}
           onChange={handleChange}
-          style={{ marginRight: "10px" }}
         />
         <button type="submit">{editingId ? "Update" : "Add"}</button>
         {editingId && (
           <button
             type="button"
-            onClick={() => {
-              setEditingId(null);
-              setFormData({ permissionName: "", description: "" });
-            }}
-            style={{ marginLeft: "10px" }}
+            onClick={() => { setEditingId(null); setFormData({ permissionName: "", description: "" }); }}
+            className="cancel-btn"
           >
             Cancel
           </button>
         )}
       </form>
 
-      {/* Permissions table */}
       {permissions.length === 0 ? (
         <p>No permissions found.</p>
       ) : (
-        <table border="1" cellPadding="8" cellSpacing="0">
+        <table className="permission-table">
           <thead>
             <tr>
               <th>ID</th>
@@ -141,10 +121,8 @@ function Permission() {
                 <td>{perm.permissionName}</td>
                 <td>{perm.description}</td>
                 <td>
-                  <button onClick={() => handleEdit(perm)}>Edit</button>
-                  <button onClick={() => handleDelete(perm.id)} style={{ marginLeft: "10px" }}>
-                    Delete
-                  </button>
+                  <button className="edit-btn" onClick={() => handleEdit(perm)}>Edit</button>
+                  <button className="delete-btn" onClick={() => handleDelete(perm.id)}>Delete</button>
                 </td>
               </tr>
             ))}

@@ -15,6 +15,7 @@ import ManageUsers from "./components/Admin/ManageUsers";
 import ChangePassword from "./components/Admin/ChangePassword";
 import ManageUserEdit from "./components/Admin/ManageUserEdit";
 import Permission from "./components/Admin/Permission";
+import AuditLogs from "./components/Admin/AuditLogs";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="settings/manage-users" element={<ManageUsers />} />
           <Route path="settings/manage-users-edit/:id" element={<ManageUserEdit />} />
           <Route path="settings/change-password" element={<ChangePassword />} />
+          <Route path="settings/audit-logs" element={<AuditLogs />} />
         </Route>
 
 
