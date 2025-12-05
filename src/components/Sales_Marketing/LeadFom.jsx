@@ -135,6 +135,7 @@ function LeadForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -142,19 +143,35 @@ function LeadForm() {
     }
 
     try {
-      const res = await axios.post(BASE_URL, form);
+      const token = localStorage.getItem("token");
+
+      const payload = {
+        ...form,
+        assignedTo: form.assignedTo || null // send HAL URI directly
+      };
+
+      const res = await axios.post(BASE_URL, payload, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       if (res.status === 200 || res.status === 201) {
         alert("Lead saved successfully!");
         setForm(initialState);
         setErrors({});
       } else {
-        alert("Failed to save lead");
+        alert("Failed to save lead: Unexpected response");
+        console.error("Unexpected response:", res);
       }
     } catch (err) {
-      console.error(err);
-      alert("Failed to save lead");
+      console.error("Lead save error:", err.response?.data || err.message);
+      alert(
+        "Failed to save lead: " + (err.response?.data?.message || err.message)
+      );
     }
-  }
+  };
 
   const fetchPincodeDetails = async (pincode) => {
     if (pincode.length !== 6) return; // Only allow 6 digit Indian pincode

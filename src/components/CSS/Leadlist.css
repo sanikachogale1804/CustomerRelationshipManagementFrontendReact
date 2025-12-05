@@ -1,10 +1,15 @@
 /* Main container */
 .leads-container {
-  padding: 15px 25px;
-  font-family: "Segoe UI", sans-serif;
+  background-color: #f8f9f9;  /* same as Lead-Form */
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 20px;
+  max-width: 1000px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
 }
 
-/* TOP FILTER BUTTONS */
+/* Top filter buttons */
 .top-controls {
   display: flex;
   align-items: center;
@@ -14,8 +19,8 @@
 }
 
 .filter-btn {
-  padding: 5px 14px;
-  border: 1px solid #d0d4d9;
+  padding: 7px 14px;
+  border: 1px solid #ccc;
   background: #fff;
   border-radius: 4px;
   cursor: pointer;
@@ -23,59 +28,71 @@
 }
 
 .filter-btn.active {
-  background: #1266f1;
-  color: white;
-  border-color: #1266f1;
+  background-color: #228B22;  /* similar green as Lead-Form submit */
+  color: #fff;
+  border-color: #196619;
 }
 
-/* SEARCH + ADD ROW */
+/* Search + Add row */
 .search-row {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 .search-input {
   width: 250px;
-  padding: 7px 10px;
-  border: 1px solid #c7c7c7;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 13px;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: #228B22;
+  box-shadow: 0 0 3px #228B22;
 }
 
 .add-btn {
-  background: #f59e0b;
+  background-color: #228B22;
   border: none;
-  padding: 7px 14px;
+  padding: 8px 14px;
   font-size: 13px;
   color: white;
   border-radius: 4px;
   cursor: pointer;
-  font-weight: 600;
 }
 
-/* TABLE */
+.add-btn:hover {
+  background-color: #196619;
+}
+
+/* Table */
 .leads-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 6px;
+  font-family: Arial, sans-serif;
 }
 
 .leads-table thead th {
   font-size: 14px;
   color: #333;
   text-align: left;
-  padding-bottom: 8px;
-  border-bottom: 2px solid #e5e7eb;
+  padding: 10px;
+  border-bottom: 2px solid #ddd;
 }
 
 .leads-table tbody tr {
-  background: #fff;
+  background-color: #fff;
   border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
 .leads-table td {
-  padding: 10px 10px;
+  padding: 10px;
   font-size: 14px;
   color: #444;
   border-top: 1px solid #eee;
@@ -101,10 +118,47 @@
   font-size: 17px;
 }
 
-.edit-icon {
-  color: #0d6efd;
+.action-col {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
-.whatsapp-icon {
-  color: #25d366;
+/* Base small square button */
+.square-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  background: #ccc;
+  padding: 0;
+}
+
+/* Chhota white icon */
+.square-btn i {
+  font-size: 11px;      /* small icon */
+  color: #ffffff !important;   /* <<< WHITE ICON */
+}
+
+/* Orange background */
+.edit-square {
+  background-color: #eb9809;
+}
+
+/* Green background */
+.whatsapp-square {
+  background-color: #17803d;
+}
+
+/* Hover effects */
+.edit-square:hover {
+  background-color: #d78507;
+}
+
+.whatsapp-square:hover {
+  background-color: #1ca34c;
 }
