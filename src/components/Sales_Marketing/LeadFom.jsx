@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BASE_URL } from '../services/leadService';
 import axios from 'axios';
 import '../CSS/LeadForm.css';
 import { Country, State } from 'country-state-city';
+import { fetchUsers } from '../services/userService';
 
 function LeadForm() {
   const initialState = {
@@ -35,6 +36,7 @@ function LeadForm() {
   const [errors, setErrors] = useState({});
   const countries = Country.getAllCountries();
   const states = State.getStatesOfCountry(form.country);
+  const [users, setUsers] = useState([]);
 
   const sourceOptions = [
     "Website Enquiry",
@@ -88,6 +90,20 @@ function LeadForm() {
     "Lost",
     "Won"
   ];
+
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const usersData = await fetchUsers(); // Already returns array
+        console.log("Users API response in LeadForm:", usersData);
+        setUsers(usersData);
+      } catch (err) {
+        console.error("Failed to fetch users in LeadForm:", err);
+      }
+    };
+
+    getUsers();
+  }, []);
 
 
   const handleChange = (e) => {
@@ -167,6 +183,8 @@ function LeadForm() {
   };
 
 
+
+
   return (
     <div>
       <h3>Enter Lead</h3>
@@ -201,12 +219,13 @@ function LeadForm() {
             <label>Country</label>
             <select name="country" value={form.country} onChange={handleChange}>
               <option value="">Select Country</option>
-              {countries.map(c => (
-                <option key={c.isoCode} value={c.isoCode}>
+              {countries.map((c, index) => (
+                <option key={`${c.isoCode}-${index}`} value={c.isoCode}>
                   {c.name}
                 </option>
               ))}
             </select>
+
           </div>
 
           <div className="form-group">
@@ -221,12 +240,13 @@ function LeadForm() {
             <label>State</label>
             <select name="state" value={form.state} onChange={handleChange}>
               <option value="">Select State</option>
-              {states.map(s => (
-                <option key={s.isoCode} value={s.name}>
+              {states.map((s, index) => (
+                <option key={`${s.isoCode}-${index}`} value={s.name}>
                   {s.name}
                 </option>
               ))}
             </select>
+
           </div>
 
           <div className="form-group">
@@ -272,10 +292,13 @@ function LeadForm() {
         <div className="form-row">
           <select name="source" value={form.source} onChange={handleChange}>
             <option value="">Select Source</option>
-            {sourceOptions.map(src => (
-              <option key={src} value={src}>{src}</option>
+            {sourceOptions.map((src, index) => (
+              <option key={`${src}-${index}`} value={src}>
+                {src}
+              </option>
             ))}
           </select>
+
           {errors.source && <span className="error">{errors.source}</span>}
 
           <div className="form-group">
@@ -287,18 +310,24 @@ function LeadForm() {
         <div className="form-row">
           <select name="requirement" value={form.requirement} onChange={handleChange}>
             <option value="">Select Requirement</option>
-            {requirementOptions.map(req => (
-              <option key={req} value={req}>{req}</option>
+            {requirementOptions.map((req, index) => (
+              <option key={`${req}-${index}`} value={req}>
+                {req}
+              </option>
             ))}
           </select>
+
           {errors.requirement && <span className="error">{errors.requirement}</span>}
 
           <select name="category" value={form.category} onChange={handleChange}>
             <option value="">Select Category</option>
-            {categoryOptions.map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
+            {categoryOptions.map((cat, index) => (
+              <option key={`${cat}-${index}`} value={cat}>
+                {cat}
+              </option>
             ))}
           </select>
+
           {errors.category && <span className="error">{errors.category}</span>}
 
         </div>
@@ -321,15 +350,29 @@ function LeadForm() {
           </div>
           <div className="form-group">
             <label>Assigned To</label>
-            <input name="assignedTo" value={form.assignedTo} onChange={handleChange} />
+            <select
+              name="assignedTo"
+              value={form.assignedTo}
+              onChange={(e) => setForm(prev => ({ ...prev, assignedTo: e.target.value }))}
+            >
+              <option value="">Select User</option>
+              {users.map((user) => (
+                <option key={user._links.self.href} value={user._links.self.href}>
+                  {user.fullName || user.username || "Unnamed User"}
+                </option>
+              ))}
+            </select>
+
           </div>
         </div>
 
         <div className="form-row">
           <select name="stage" value={form.stage} onChange={handleChange}>
             <option value="">Select Stage</option>
-            {stageOptions.map(stg => (
-              <option key={stg} value={stg}>{stg}</option>
+            {stageOptions.map((stg, index) => (
+              <option key={`${stg}-${index}`} value={stg}>
+                {stg}
+              </option>
             ))}
           </select>
 

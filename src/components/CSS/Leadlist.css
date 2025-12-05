@@ -1,0 +1,110 @@
+/* Main container */
+.leads-container {
+  padding: 15px 25px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* TOP FILTER BUTTONS */
+.top-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 5px 14px;
+  border: 1px solid #d0d4d9;
+  background: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.filter-btn.active {
+  background: #1266f1;
+  color: white;
+  border-color: #1266f1;
+}
+
+/* SEARCH + ADD ROW */
+.search-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  width: 250px;
+  padding: 7px 10px;
+  border: 1px solid #c7c7c7;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.add-btn {
+  background: #f59e0b;
+  border: none;
+  padding: 7px 14px;
+  font-size: 13px;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* TABLE */
+.leads-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 6px;
+}
+
+.leads-table thead th {
+  font-size: 14px;
+  color: #333;
+  text-align: left;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.leads-table tbody tr {
+  background: #fff;
+  border-radius: 6px;
+}
+
+.leads-table td {
+  padding: 10px 10px;
+  font-size: 14px;
+  color: #444;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.leads-table td:first-child {
+  border-left: 1px solid #eee;
+  border-radius: 6px 0 0 6px;
+}
+
+.leads-table td:last-child {
+  border-right: 1px solid #eee;
+  border-radius: 0 6px 6px 0;
+}
+
+/* Action icons */
+.action-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  margin-right: 8px;
+  font-size: 17px;
+}
+
+.edit-icon {
+  color: #0d6efd;
+}
+
+.whatsapp-icon {
+  color: #25d366;
+}

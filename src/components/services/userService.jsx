@@ -16,24 +16,26 @@ export const fetchUsers = async () => {
       withCredentials: true
     });
 
+    console.log("Users API response:", response.data);
+
     const data = response.data;
 
-    // Handle HATEOAS format
     if (data._embedded && data._embedded.users) {
       return data._embedded.users;
     }
 
-    // If API returns array directly
     if (Array.isArray(data)) {
       return data;
     }
 
     return [];
   } catch (error) {
-    console.error("Error fetching users:", error);
+    console.error("Error fetching users:", error.response || error.message);
     return [];
   }
 };
+
+
 
 // Extract parent ID from reportingTo
 export const getParentsId = (user) => {
