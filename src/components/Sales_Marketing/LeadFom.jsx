@@ -9,7 +9,8 @@ function LeadForm() {
   const initialState = {
     business: "",
     address: "",
-    name: "",
+    firstName: "",
+    lastName: "",
     designation: "",
     country: "",
     city: "",
@@ -28,7 +29,7 @@ function LeadForm() {
     product: "",
     potential: "",
     assignedTo: "",
-    stage: "",
+    stage: "New",
     tags: ""
   };
 
@@ -71,14 +72,9 @@ function LeadForm() {
     "AELV",
     "Networking",
     "CCTV"
-  ]
+  ];
 
-  const categoryOptions = [
-    "Service",
-    "Product",
-    "Service & Product"
-  ]
-
+  const categoryOptions = ["Service", "Product", "Service & Product"];
   const stageOptions = [
     "New",
     "Discussion",
@@ -94,8 +90,7 @@ function LeadForm() {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const usersData = await fetchUsers(); // Already returns array
-        console.log("Users API response in LeadForm:", usersData);
+        const usersData = await fetchUsers();
         setUsers(usersData);
       } catch (err) {
         console.error("Failed to fetch users in LeadForm:", err);
@@ -105,33 +100,27 @@ function LeadForm() {
     getUsers();
   }, []);
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setForm(prev => ({ ...prev, [name]: value }));
 
-    if (name === "pincode") {
-      fetchPincodeDetails(value);
-    }
+    if (name === "pincode") fetchPincodeDetails(value);
   };
-
 
   const validate = () => {
     const newErrors = {};
-
     if (!form.business.trim()) newErrors.business = "Business is required";
-    if (!form.name.trim()) newErrors.name = "Name is required";
+    if (!form.firstName.trim()) newErrors.firstName = "First name is required";
+    if (!form.lastName.trim()) newErrors.lastName = "Last name is required";
     if (!form.mobile.trim()) newErrors.mobile = "Mobile is required";
     else if (!/^\d{10}$/.test(form.mobile)) newErrors.mobile = "Mobile must be 10 digits";
     if (!form.email.trim()) newErrors.email = "Email is required";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) newErrors.email = "Invalid email format";
     if (!form.requirement.trim()) newErrors.requirement = "Requirement is required";
     if (!form.category.trim()) newErrors.category = "Category is required";
-    if (!form.source.trim()) newErrors.category = "Source is required";
-
+    if (!form.source.trim()) newErrors.source = "Source is required";
     return newErrors;
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -147,7 +136,7 @@ function LeadForm() {
 
       const payload = {
         ...form,
-        assignedTo: form.assignedTo || null // send HAL URI directly
+        assignedTo: form.assignedTo || null
       };
 
       const res = await axios.post(BASE_URL, payload, {
@@ -174,7 +163,7 @@ function LeadForm() {
   };
 
   const fetchPincodeDetails = async (pincode) => {
-    if (pincode.length !== 6) return; // Only allow 6 digit Indian pincode
+    if (pincode.length !== 6) return;
 
     try {
       const res = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
@@ -182,14 +171,12 @@ function LeadForm() {
 
       if (data[0].Status === "Success") {
         const info = data[0].PostOffice[0];
-
         setForm(prev => ({
           ...prev,
           city: info.District,
           state: info.State,
           country: "India"
         }));
-
         setErrors(prev => ({ ...prev, pincode: "" }));
       } else {
         setErrors(prev => ({ ...prev, pincode: "Invalid Pincode" }));
@@ -198,8 +185,6 @@ function LeadForm() {
       console.log(e);
     }
   };
-
-
 
 
   return (
@@ -220,11 +205,20 @@ function LeadForm() {
         </div>
 
         <div className="form-row">
-          <div className="form-group">
-            <label>Name *</label>
-            <input name="name" value={form.name} onChange={handleChange} />
-            {errors.name && <span className="error">{errors.name}</span>}
+          <div className="form-row">
+            <div className="form-group">
+              <label>First Name *</label>
+              <input name="firstName" value={form.firstName} onChange={handleChange} />
+              {errors.firstName && <span className="error">{errors.firstName}</span>}
+            </div>
+
+            <div className="form-group">
+              <label>Last Name *</label>
+              <input name="lastName" value={form.lastName} onChange={handleChange} />
+              {errors.lastName && <span className="error">{errors.lastName}</span>}
+            </div>
           </div>
+
           <div className="form-group">
             <label>Designation</label>
             <input name="designation" value={form.designation} onChange={handleChange} />

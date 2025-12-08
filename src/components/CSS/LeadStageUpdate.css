@@ -1,0 +1,95 @@
+/* LeadStageUpdate.css */
+
+.update-status-page {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-family: Arial, sans-serif;
+}
+
+.update-status-page h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333333;
+}
+
+.current-stage {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #555555;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.form-row label {
+  width: 160px;
+  font-weight: bold;
+  color: #333333;
+}
+
+.form-row select,
+.form-row input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.form-row button {
+  margin-left: 15px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.btn.green {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn.green:hover {
+  background-color: #218838;
+}
+
+.btn.red {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn.red:hover {
+  background-color: #c82333;
+}
+
+.btn.blue {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn.blue:hover {
+  background-color: #0069d9;
+}
+
+.btn.grey {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn.grey:hover {
+  background-color: #5a6268;
+}
+
+.update-status-page .form-row button:last-child {
+  margin-left: 10px;
+}

@@ -1,7 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../CSS/LeadDetailsModal.css";
+import LeadEditForm from "./LeadEditForm";
 
 function LeadDetailsModal({ lead, onClose }) {
+  const [openReassign, setOpenReassign] = useState(false);
+  const navigate = useNavigate();
+
+  const goToUpdateStatus = () => {
+    let leadId;
+
+    if (lead.id) {
+      leadId = lead.id;
+    } else if (lead._links?.self?.href) {
+      // Extract ID from URL
+      const parts = lead._links.self.href.split("/");
+      leadId = parts[parts.length - 1]; // last part is the ID
+    }
+
+    if (leadId) {
+      navigate(`/lead/${leadId}/update-status`);
+    } else {
+      alert("Lead ID not available!");
+      console.log("Lead object missing ID:", lead);
+    }
+  };
+
   if (!lead) return null;
 
   const formatDate = (dateStr) => {
@@ -18,24 +42,24 @@ function LeadDetailsModal({ lead, onClose }) {
     <div className="modal-overlay">
       <div className="modal-box-wide">
 
-        {/* HEADER WITH BUSINESS NAME */}
+        {/* HEADER */}
         <div className="header-row">
-          <h1 className="modal-title">{lead.business}</h1>
+          <h1 className="modal-title">{lead.Business}</h1>
           <button className="close-x" onClick={onClose}>×</button>
         </div>
 
         <div className="modal-grid">
 
-          {/* ------------------------------------------------ */}
           {/* LEFT PANEL */}
-          {/* ------------------------------------------------ */}
           <div className="left-panel">
-
-            {/* CONTACT INFO */}
             <div className="section-card">
               <h2 className="section-title">Contact Information</h2>
-
-              <div className="info-row"><strong>Name:</strong> <span>{lead.name}</span></div>
+              <div className="info-row">
+                <strong>Name:</strong>
+                <span>
+                  {`${lead.firstName || lead.contact?.firstName || ""} ${lead.lastName || lead.contact?.lastName || ""}`.trim() || "Not Provided"}
+                </span>
+              </div>
               <div className="info-row"><strong>Mobile:</strong> <span>{lead.mobile}</span></div>
               <div className="info-row"><strong>Email:</strong> <span>{lead.email}</span></div>
               <div className="info-row">
@@ -43,50 +67,23 @@ function LeadDetailsModal({ lead, onClose }) {
               </div>
             </div>
 
-            {/* BUSINESS OPPORTUNITY */}
             <div className="section-card">
               <h2 className="section-title">Business Opportunity</h2>
-
-              <div className="info-row">
-                <strong>Received On:</strong>
-                <span>{formatDate(lead.since)}</span>
-              </div>
-
-              <div className="info-row">
-                <strong>Source:</strong>
-                <span>{lead.source || "Not Provided"}</span>
-              </div>
-
-              <div className="info-row">
-                <strong>Interested In:</strong>
-                <span>{lead.category || "Not Provided"}</span>
-              </div>
-
-              <div className="info-row">
-                <strong>Requirement:</strong>
-                <span>{lead.requirement || "Not Provided"}</span>
-              </div>
-
-              <div className="info-row">
-                <strong>Code:</strong>
-                <span>{lead.code || "Not Provided"}</span>
-              </div>
+              <div className="info-row"><strong>Received On:</strong> <span>{formatDate(lead.since)}</span></div>
+              <div className="info-row"><strong>Source:</strong> <span>{lead.source || "Not Provided"}</span></div>
+              <div className="info-row"><strong>Interested In:</strong> <span>{lead.category || "Not Provided"}</span></div>
+              <div className="info-row"><strong>Requirement:</strong> <span>{lead.requirement || "Not Provided"}</span></div>
+              <div className="info-row"><strong>Code:</strong> <span>{lead.code || "Not Provided"}</span></div>
             </div>
-
           </div>
 
-          {/* ------------------------------------------------ */}
           {/* RIGHT PANEL */}
-          {/* ------------------------------------------------ */}
           <div className="right-panel">
-
-            {/* ACTIONS */}
             <div className="section-card">
               <h2 className="section-title">Actions</h2>
-
               <div className="actions-row">
-                <button className="action-btn grey">Reassign</button>
-                <button className="action-btn blue">Update Status</button>
+                <button className="action-btn grey" onClick={() => setOpenReassign(true)}>Reassign</button>
+                <button className="action-btn blue" onClick={goToUpdateStatus}>Update Status</button>
                 <button className="action-btn green">+ Quote</button>
                 <button className="action-btn green">+ PI</button>
                 <button className="action-btn green">+ Order</button>
@@ -95,21 +92,20 @@ function LeadDetailsModal({ lead, onClose }) {
               </div>
             </div>
 
+            {/* Reassign Form */}
+            {openReassign && <LeadEditForm lead={lead} onClose={() => setOpenReassign(false)} />}
+
             {/* BUSINESS INTERACTIONS */}
             <div className="section-card">
               <h2 className="section-title">Business Interactions</h2>
-
               <p className="small-label">Next Appointment</p>
-
               <div className="interaction-box">
                 <button className="interact-btn">+ Enter Interaction</button>
               </div>
             </div>
 
           </div>
-
         </div>
-
       </div>
     </div>
   );
