@@ -1,74 +1,96 @@
+.modal-box-wide {
+  background: white;
+  width: 90%;
+  max-width: 1200px;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 999;
+  justify-content: center;
+  z-index: 9999; /* Make sure it's above your page */
 }
 
-.modal-box {
-  width: 600px;
-  background: #fff;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
-  animation: zoomIn 0.2s ease-in-out;
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-@keyframes zoomIn {
-  from { transform: scale(0.9); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
+.close-x {
+  font-size: 26px;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
-.modal-title {
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  text-align: center;
+.modal-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 20px;
+  margin-top: 15px;
 }
 
-.section {
-  margin-bottom: 25px;
-  padding: 15px;
-  border-radius: 8px;
+.section-card {
   background: #f7f7f7;
+  padding: 15px 18px;
+  border-radius: 10px;
+  margin-bottom: 15px;
 }
 
 .section-title {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 10px;
+  font-size: 18px;
+  margin-bottom: 12px;
 }
 
 .info-row {
   display: flex;
   justify-content: space-between;
   padding: 6px 0;
-  font-size: 16px;
 }
 
-.opportunity-text {
-  font-size: 16px;
-  line-height: 1.5;
+.actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.close-btn {
-  width: 100%;
-  padding: 12px;
-  background: #333;
-  color: #fff;
-  font-size: 18px;
+.action-btn {
+  padding: 8px 12px;
   border-radius: 6px;
   border: none;
   cursor: pointer;
-  margin-top: 10px;
+  color: #fff;
+  font-size: 14px;
 }
 
-.close-btn:hover {
-  background: #111;
+.grey { background: #34495e; }
+.blue { background: #007bff; }
+.green { background: #2ecc71; }
+.brown { background: #6f4e37; }
+
+.interact-btn {
+  background: #2ecc71;
+  border: none;
+  padding: 10px 14px;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.small-label {
+  font-size: 14px;
+  margin-bottom: 10px;
 }
