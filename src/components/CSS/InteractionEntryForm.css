@@ -1,0 +1,73 @@
+.interaction-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+}
+
+.interaction-modal {
+  width: 550px;
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-heading {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.section-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.section-block input,
+.section-block select,
+.section-block textarea {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.whatsapp-btn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  background: #25d366;
+  color: white;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-row {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.close-btn {
+  padding: 10px 20px;
+  background: grey;
+  color: white;
+  border-radius: 8px;
+}
+
+.save-btn {
+  padding: 10px 20px;
+  background: royalblue;
+  color: white;
+  border-radius: 8px;
+}

@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../CSS/LeadDetailsModal.css";
 import LeadEditForm from "./LeadEditForm";
+import InteractionEntryForm from "./InteractionEntryForm";
 
 function LeadDetailsModal({ lead, onClose }) {
   const [openReassign, setOpenReassign] = useState(false);
+  const [openInteraction, setOpenInteraction] = useState(false);
+
   const navigate = useNavigate();
 
   const goToUpdateStatus = () => {
@@ -96,13 +99,26 @@ function LeadDetailsModal({ lead, onClose }) {
             {openReassign && <LeadEditForm lead={lead} onClose={() => setOpenReassign(false)} />}
 
             {/* BUSINESS INTERACTIONS */}
+            {/* BUSINESS INTERACTIONS */}
             <div className="section-card">
               <h2 className="section-title">Business Interactions</h2>
               <p className="small-label">Next Appointment</p>
+
               <div className="interaction-box">
-                <button className="interact-btn">+ Enter Interaction</button>
+                <button className="interact-btn" onClick={() => setOpenInteraction(true)}>
+                  + Enter Interaction
+                </button>
               </div>
             </div>
+
+            {/* ✅ ADD THIS RIGHT BELOW BUSINESS INTERACTIONS */}
+            {openInteraction && (
+              <InteractionEntryForm
+                lead={lead}
+                onClose={() => setOpenInteraction(false)}
+              />
+            )}
+
 
           </div>
         </div>

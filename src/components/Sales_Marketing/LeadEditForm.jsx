@@ -118,7 +118,7 @@ function LeadEditForm({ lead, onClose }) {
                     <div className="form-row">
                         <div className="form-group">
                             <label>Business *</label>
-                            <input name="Business" value={form.Business || ""} onChange={handleChange} />
+                            <input name="business" value={form.business || ""} onChange={handleChange} />
                         </div>
 
                         <div className="form-group">
