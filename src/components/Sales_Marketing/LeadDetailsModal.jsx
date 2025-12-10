@@ -10,17 +10,16 @@ function LeadDetailsModal({ lead, onClose }) {
 
   const navigate = useNavigate();
 
+  if (!lead) return null;
+
+  // Normalize lead.id so InteractionEntryForm always gets valid ID
+  if (!lead.id && lead._links?.self?.href) {
+    const parts = lead._links.self.href.split("/");
+    lead.id = parseInt(parts[parts.length - 1], 10);
+  }
+
   const goToUpdateStatus = () => {
-    let leadId;
-
-    if (lead.id) {
-      leadId = lead.id;
-    } else if (lead._links?.self?.href) {
-      // Extract ID from URL
-      const parts = lead._links.self.href.split("/");
-      leadId = parts[parts.length - 1]; // last part is the ID
-    }
-
+    let leadId = lead.id;
     if (leadId) {
       navigate(`/lead/${leadId}/update-status`);
     } else {
@@ -28,8 +27,6 @@ function LeadDetailsModal({ lead, onClose }) {
       console.log("Lead object missing ID:", lead);
     }
   };
-
-  if (!lead) return null;
 
   const formatDate = (dateStr) => {
     if (!dateStr) return "Not Provided";
@@ -44,7 +41,6 @@ function LeadDetailsModal({ lead, onClose }) {
   return (
     <div className="modal-overlay">
       <div className="modal-box-wide">
-
         {/* HEADER */}
         <div className="header-row">
           <h1 className="modal-title">{lead.Business}</h1>
@@ -52,7 +48,6 @@ function LeadDetailsModal({ lead, onClose }) {
         </div>
 
         <div className="modal-grid">
-
           {/* LEFT PANEL */}
           <div className="left-panel">
             <div className="section-card">
@@ -99,11 +94,9 @@ function LeadDetailsModal({ lead, onClose }) {
             {openReassign && <LeadEditForm lead={lead} onClose={() => setOpenReassign(false)} />}
 
             {/* BUSINESS INTERACTIONS */}
-            {/* BUSINESS INTERACTIONS */}
             <div className="section-card">
               <h2 className="section-title">Business Interactions</h2>
               <p className="small-label">Next Appointment</p>
-
               <div className="interaction-box">
                 <button className="interact-btn" onClick={() => setOpenInteraction(true)}>
                   + Enter Interaction
@@ -111,14 +104,13 @@ function LeadDetailsModal({ lead, onClose }) {
               </div>
             </div>
 
-            {/* ✅ ADD THIS RIGHT BELOW BUSINESS INTERACTIONS */}
+            {/* Interaction Form */}
             {openInteraction && (
               <InteractionEntryForm
-                lead={lead}
+                lead={lead} // ensure lead.id exists
                 onClose={() => setOpenInteraction(false)}
               />
             )}
-
 
           </div>
         </div>
