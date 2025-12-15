@@ -1,0 +1,92 @@
+/* Item List Table Styling */
+.item-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+  font-family: Arial, sans-serif;
+}
+
+.item-table th,
+.item-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.item-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+.item-table input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 4px 6px;
+  font-size: 13px;
+}
+
+.item-table button {
+  padding: 4px 8px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.item-table button:hover {
+  background-color: #d32f2f;
+}
+
+/* Add Item Button */
+.item-table + button {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.item-table + button:hover {
+  background-color: #388e3c;
+}
+
+/* Responsive Table */
+@media screen and (max-width: 1024px) {
+  .item-table th,
+  .item-table td {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .item-table input {
+    font-size: 12px;
+    padding: 3px 5px;
+  }
+}
+.item-selection-box {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  max-height: 400px;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+.close-btn {
+  float: right;
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+}
