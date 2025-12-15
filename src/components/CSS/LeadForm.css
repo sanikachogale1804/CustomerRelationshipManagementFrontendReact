@@ -78,3 +78,7 @@
     border-color: #228B22;
     box-shadow: 0 0 3px #228B22;
 }
+
+.form-group-pincode{
+    width: 20%;
+}

@@ -17,6 +17,8 @@ import ChangePassword from "./components/Admin/ChangePassword";
 import ManageUserEdit from "./components/Admin/ManageUserEdit";
 import Permission from "./components/Admin/Permission";
 import AuditLogs from "./components/Admin/AuditLogs";
+import SalesMarketing from "./components/Sales_Marketing/SalesMarketing";
+import QuotationForm from "./components/Sales_Marketing/QuotationForm";
 
 function App() {
   return (
@@ -31,6 +33,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/permission" element={<Permission />} />
+        <Route path="/quotationForm" element={<QuotationForm />}/>
         <Route path="/admin" element={<AdminDashboard />}>
           <Route path="reports" element={<Reports />} />
           <Route path="settings" element={<Settings />} />
@@ -41,6 +44,7 @@ function App() {
           <Route path="settings/change-password" element={<ChangePassword />} />
           <Route path="settings/audit-logs" element={<AuditLogs />} />
         </Route>
+        <Route path="/sales" element={<SalesMarketing />} />
       </Routes>
     </Router>
   );

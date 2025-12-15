@@ -3,25 +3,29 @@ import { useNavigate } from "react-router-dom";
 import "../CSS/LeadDetailsModal.css";
 import LeadEditForm from "./LeadEditForm";
 import InteractionEntryForm from "./InteractionEntryForm";
+import AppointmentEditor from "./AppointmentEditor";
+import { FaPencilAlt } from "react-icons/fa";
+import axios from "axios";
 
 function LeadDetailsModal({ lead, onClose }) {
   const [openReassign, setOpenReassign] = useState(false);
   const [openInteraction, setOpenInteraction] = useState(false);
+  const [openAppointmentEditor, setOpenAppointmentEditor] = useState(false);
+  const [reminderText, setReminderText] = useState(""); // ✅ reminder state
 
   const navigate = useNavigate();
 
   if (!lead) return null;
 
-  // Normalize lead.id so InteractionEntryForm always gets valid ID
+  // Normalize lead.id
   if (!lead.id && lead._links?.self?.href) {
     const parts = lead._links.self.href.split("/");
     lead.id = parseInt(parts[parts.length - 1], 10);
   }
 
   const goToUpdateStatus = () => {
-    let leadId = lead.id;
-    if (leadId) {
-      navigate(`/lead/${leadId}/update-status`);
+    if (lead.id) {
+      navigate(`/lead/${lead.id}/update-status`);
     } else {
       alert("Lead ID not available!");
       console.log("Lead object missing ID:", lead);
@@ -36,6 +40,43 @@ function LeadDetailsModal({ lead, onClose }) {
       month: "short",
       year: "numeric",
     });
+  };
+
+  // ✅ Send Reminder handler
+  const handleSendReminder = async () => {
+    if (!reminderText.trim()) {
+      alert("Please enter a reminder/question before sending.");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      const payload = {
+        lead: { id: lead.id },
+        message: reminderText,
+      };
+
+      const response = await axios.post(
+        "http://localhost:8080/reminders", // adjust your backend endpoint
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 201 || response.data?.id) {
+        alert("Reminder sent successfully!");
+        setReminderText(""); // clear input
+      } else {
+        alert("Error sending reminder: " + JSON.stringify(response.data));
+      }
+    } catch (err) {
+      console.error("Error sending reminder:", err);
+      alert("Failed to send reminder. Check console.");
+    }
   };
 
   return (
@@ -54,15 +95,11 @@ function LeadDetailsModal({ lead, onClose }) {
               <h2 className="section-title">Contact Information</h2>
               <div className="info-row">
                 <strong>Name:</strong>
-                <span>
-                  {`${lead.firstName || lead.contact?.firstName || ""} ${lead.lastName || lead.contact?.lastName || ""}`.trim() || "Not Provided"}
-                </span>
+                <span>{`${lead.firstName || lead.contact?.firstName || ""} ${lead.lastName || lead.contact?.lastName || ""}`.trim() || "Not Provided"}</span>
               </div>
               <div className="info-row"><strong>Mobile:</strong> <span>{lead.mobile}</span></div>
               <div className="info-row"><strong>Email:</strong> <span>{lead.email}</span></div>
-              <div className="info-row">
-                <strong>Website:</strong> <span>{lead.website || "Not Provided"}</span>
-              </div>
+              <div className="info-row"><strong>Website:</strong> <span>{lead.website || "Not Provided"}</span></div>
             </div>
 
             <div className="section-card">
@@ -90,28 +127,68 @@ function LeadDetailsModal({ lead, onClose }) {
               </div>
             </div>
 
-            {/* Reassign Form */}
             {openReassign && <LeadEditForm lead={lead} onClose={() => setOpenReassign(false)} />}
 
             {/* BUSINESS INTERACTIONS */}
             <div className="section-card">
               <h2 className="section-title">Business Interactions</h2>
-              <p className="small-label">Next Appointment</p>
-              <div className="interaction-box">
+
+              {/* Next Appointment + Pencil */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <p className="small-label">Next Appointment</p>
+                <FaPencilAlt
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setOpenAppointmentEditor(true)}
+                  title="Edit Appointment"
+                />
+              </div>
+
+              {/* Enter Interaction */}
+              <div className="interaction-box" style={{ marginTop: "10px" }}>
                 <button className="interact-btn" onClick={() => setOpenInteraction(true)}>
                   + Enter Interaction
                 </button>
               </div>
+
+              {/* Reminder Section */}
+              <div className="reminder-section" style={{ marginTop: "20px" }}>
+                <label><strong>Reminder to {lead.Business}</strong></label>
+                <textarea
+                  placeholder="Enter your reminder or question..."
+                  value={reminderText}
+                  onChange={(e) => setReminderText(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: "8px",
+                    borderRadius: "5px",
+                    border: "1px solid #ccc",
+                    marginTop: "5px",
+                    resize: "vertical"
+                  }}
+                />
+                <button
+                  className="save-btn"
+                  style={{ marginTop: "10px" }}
+                  onClick={handleSendReminder}
+                >
+                  Send
+                </button>
+              </div>
             </div>
 
-            {/* Interaction Form */}
             {openInteraction && (
               <InteractionEntryForm
-                lead={lead} // ensure lead.id exists
+                lead={lead}
                 onClose={() => setOpenInteraction(false)}
               />
             )}
 
+            {openAppointmentEditor && (
+              <AppointmentEditor
+                lead={lead}
+                onClose={() => setOpenAppointmentEditor(false)}
+              />
+            )}
           </div>
         </div>
       </div>

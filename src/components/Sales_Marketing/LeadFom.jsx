@@ -71,7 +71,19 @@ function LeadForm() {
     "ELV",
     "AELV",
     "Networking",
-    "CCTV"
+    "CCTV",
+    "CCTV Survlillance System", 
+    "Entrance Control System",
+    "Fire Alarm System",
+    "Vehicle Management System",
+    "Energy Management System",
+    "Visitor Management System",
+    "Command Control center",
+    "Intrusion Detection System",
+    "Scanning & Detection System",
+    "Video Management System",
+    "Fire Suppression System",
+    "Intergrity Facility Management System",
   ];
 
   const categoryOptions = ["Service", "Product", "Service & Product"];
@@ -193,13 +205,17 @@ function LeadForm() {
     <div>
       <h3>Enter Lead</h3>
       <form className='Lead-Form' onSubmit={handleSubmit}>
-        <h4>Core Data</h4>
+
+        {/* ======================= BUSINESS DETAILS ======================= */}
+        <h4>Business Details</h4>
+
         <div className="form-row">
           <div className="form-group">
             <label>Business *</label>
             <input name="business" value={form.business} onChange={handleChange} />
             {errors.business && <span className="error">{errors.business}</span>}
           </div>
+
           <div className="form-group">
             <label>Address</label>
             <input name="address" value={form.address} onChange={handleChange} />
@@ -207,18 +223,54 @@ function LeadForm() {
         </div>
 
         <div className="form-row">
-          <div className="form-row">
-            <div className="form-group">
-              <label>First Name *</label>
-              <input name="firstName" value={form.firstName} onChange={handleChange} />
-              {errors.firstName && <span className="error">{errors.firstName}</span>}
-            </div>
+          <div className="form-group">
+            <label>Country</label>
+            <select name="country" value={form.country} onChange={handleChange}>
+              <option value="">Select Country</option>
+              {countries.map((c, index) => (
+                <option key={index} value={c.isoCode}>{c.name}</option>
+              ))}
+            </select>
+          </div>
 
-            <div className="form-group">
-              <label>Last Name *</label>
-              <input name="lastName" value={form.lastName} onChange={handleChange} />
-              {errors.lastName && <span className="error">{errors.lastName}</span>}
-            </div>
+          <div className="form-group">
+            <label>City</label>
+            <input name="city" value={form.city} readOnly />
+          </div>
+
+          <div className="form-group">
+            <label>State</label>
+            <select name="state" value={form.state} onChange={handleChange}>
+              <option value="">Select State</option>
+              {states.map((s, index) => (
+                <option key={index} value={s.name}>{s.name}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-group-pincode">
+            <label>Pincode</label>
+            <input name="pincode" value={form.pincode} onChange={handleChange} />
+            {errors.pincode && <span className="error">{errors.pincode}</span>}
+          </div>
+        </div>
+
+        {/* ======================= PERSONAL DETAILS ======================= */}
+        <h4>Personal Details</h4>
+
+        <div className="form-row">
+          <div className="form-group">
+            <label>First Name *</label>
+            <input name="firstName" value={form.firstName} onChange={handleChange} />
+            {errors.firstName && <span className="error">{errors.firstName}</span>}
+          </div>
+
+          <div className="form-group">
+            <label>Last Name *</label>
+            <input name="lastName" value={form.lastName} onChange={handleChange} />
+            {errors.lastName && <span className="error">{errors.lastName}</span>}
           </div>
 
           <div className="form-group">
@@ -229,89 +281,49 @@ function LeadForm() {
 
         <div className="form-row">
           <div className="form-group">
-            <label>Country</label>
-            <select name="country" value={form.country} onChange={handleChange}>
-              <option value="">Select Country</option>
-              {countries.map((c, index) => (
-                <option key={`${c.isoCode}-${index}`} value={c.isoCode}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
-
-          </div>
-
-          <div className="form-group">
-            <label>City</label>
-            <input name="city" value={form.city} readOnly />
-          </div>
-
-        </div>
-
-        <div className="form-row">
-          <div className="form-group">
-            <label>State</label>
-            <select name="state" value={form.state} onChange={handleChange}>
-              <option value="">Select State</option>
-              {states.map((s, index) => (
-                <option key={`${s.isoCode}-${index}`} value={s.name}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-
-          </div>
-
-          <div className="form-group">
             <label>Mobile *</label>
             <input name="mobile" value={form.mobile} onChange={handleChange} />
             {errors.mobile && <span className="error">{errors.mobile}</span>}
           </div>
-        </div>
 
-        <div className="form-row">
           <div className="form-group">
             <label>Email *</label>
             <input name="email" value={form.email} onChange={handleChange} />
             {errors.email && <span className="error">{errors.email}</span>}
           </div>
-          <div className="form-group">
-            <label>GSTIN</label>
-            <input name="gstin" value={form.gstin} onChange={handleChange} />
-          </div>
         </div>
+
+
+        {/* ======================= COMPANY DETAILS ======================= */}
+        <h4>Company Details</h4>
 
         <div className="form-row">
           <div className="form-group">
-            <label>Pincode</label>
-            <input name="pincode" value={form.pincode} onChange={handleChange} />
-            {errors.pincode && <span className="error">{errors.pincode}</span>}
+            <label>GSTIN</label>
+            <input name="gstin" value={form.gstin} onChange={handleChange} />
           </div>
 
           <div className="form-group">
             <label>Website</label>
             <input name="website" value={form.website} onChange={handleChange} />
           </div>
-        </div>
 
-        <div className="form-row">
           <div className="form-group">
             <label>Code</label>
             <input name="code" value={form.code} onChange={handleChange} />
           </div>
         </div>
 
+        {/* ======================= REMAINING FIELDS (NOT CHANGED) ======================= */}
+
         <h4>Business Opportunity</h4>
         <div className="form-row">
           <select name="source" value={form.source} onChange={handleChange}>
             <option value="">Select Source</option>
             {sourceOptions.map((src, index) => (
-              <option key={`${src}-${index}`} value={src}>
-                {src}
-              </option>
+              <option key={index} value={src}>{src}</option>
             ))}
           </select>
-
           {errors.source && <span className="error">{errors.source}</span>}
 
           <div className="form-group">
@@ -324,9 +336,7 @@ function LeadForm() {
           <select name="requirement" value={form.requirement} onChange={handleChange}>
             <option value="">Select Requirement</option>
             {requirementOptions.map((req, index) => (
-              <option key={`${req}-${index}`} value={req}>
-                {req}
-              </option>
+              <option key={index} value={req}>{req}</option>
             ))}
           </select>
 
@@ -335,14 +345,11 @@ function LeadForm() {
           <select name="category" value={form.category} onChange={handleChange}>
             <option value="">Select Category</option>
             {categoryOptions.map((cat, index) => (
-              <option key={`${cat}-${index}`} value={cat}>
-                {cat}
-              </option>
+              <option key={index} value={cat}>{cat}</option>
             ))}
           </select>
 
           {errors.category && <span className="error">{errors.category}</span>}
-
         </div>
 
         <div className="form-row">
@@ -350,6 +357,7 @@ function LeadForm() {
             <label>Notes</label>
             <input name="notes" value={form.notes} onChange={handleChange} />
           </div>
+
           <div className="form-group">
             <label>Product</label>
             <input name="product" value={form.product} onChange={handleChange} />
@@ -361,6 +369,7 @@ function LeadForm() {
             <label>Potential</label>
             <input name="potential" value={form.potential} onChange={handleChange} />
           </div>
+
           <div className="form-group">
             <label>Assigned To</label>
             <select
@@ -371,11 +380,10 @@ function LeadForm() {
               <option value="">Select User</option>
               {users.map((user) => (
                 <option key={user._links.self.href} value={user._links.self.href}>
-                  {user.fullName || user.username || "Unnamed User"}
+                  {user.fullName || user.username}
                 </option>
               ))}
             </select>
-
           </div>
         </div>
 
@@ -383,9 +391,7 @@ function LeadForm() {
           <select name="stage" value={form.stage} onChange={handleChange}>
             <option value="">Select Stage</option>
             {stageOptions.map((stg, index) => (
-              <option key={`${stg}-${index}`} value={stg}>
-                {stg}
-              </option>
+              <option key={index} value={stg}>{stg}</option>
             ))}
           </select>
 
@@ -399,6 +405,7 @@ function LeadForm() {
       </form>
     </div>
   );
+
 }
 
 export default LeadForm;

@@ -19,13 +19,12 @@ function LeadEditForm({ lead, onClose }) {
                 country: lead.country || "",
                 state: lead.state || "",
                 city: lead.city || "",
-                assignedTo: lead.assignedTo?._links?.self?.href || lead.assignedTo || "",
+                assignedTo: lead.assignedTo?.id || "",
             });
 
             // 2️⃣ Load STATE values if country exists
             if (lead.country) {
-                const stateList = State.getStatesOfCountry(lead.country);
-                setStates(stateList);
+                setStates(State.getStatesOfCountry(lead.country));
             }
         }
 
@@ -33,7 +32,12 @@ function LeadEditForm({ lead, onClose }) {
         const loadUsers = async () => {
             try {
                 const data = await fetchUsers();
-                setUsers(data);
+                // Ensure each user has a full URL for Spring Data REST
+                const enriched = data.map(u => ({
+                    ...u,
+                    url: u._links?.self?.href || `/users/${u.id}`
+                }));
+                setUsers(enriched);
             } catch (err) {
                 console.error("User fetch failed:", err);
             }
@@ -41,8 +45,6 @@ function LeadEditForm({ lead, onClose }) {
 
         loadUsers();
     }, [lead]);
-
-
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -58,30 +60,6 @@ function LeadEditForm({ lead, onClose }) {
         }
     };
 
-
-    const updateLead = async (e) => {
-        e.preventDefault();
-
-        try {
-            const token = localStorage.getItem("token");
-
-            const res = await axios.put(lead._links.self.href, form, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
-            if (res.status === 200) {
-                alert("Lead updated successfully!");
-                onClose();
-            }
-        } catch (err) {
-            console.error("Update error:", err);
-            alert("Failed to update lead!");
-        }
-    };
-
     const fetchPincodeDetails = async (pincode) => {
         try {
             const res = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
@@ -89,7 +67,6 @@ function LeadEditForm({ lead, onClose }) {
 
             if (data[0].Status === "Success") {
                 const info = data[0].PostOffice[0];
-
                 setForm((prev) => ({
                     ...prev,
                     city: info.District,
@@ -100,7 +77,44 @@ function LeadEditForm({ lead, onClose }) {
                 setErrors((prev) => ({ ...prev, pincode: "Invalid Pincode" }));
             }
         } catch (e) {
-            console.log(e);
+            console.error(e);
+        }
+    };
+
+    const updateLead = async (e) => {
+        e.preventDefault();
+        const token = localStorage.getItem("token");
+
+        try {
+            // 1️⃣ Update lead core data
+            const payload = { ...form };
+            delete payload.assignedTo; // Handle separately
+            await axios.put(lead._links.self.href, payload, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            // 2️⃣ Update assignedTo separately
+            if (form.assignedTo) {
+                await axios.put(`${lead._links.self.href}/assignedTo`, form.assignedTo, {
+                    headers: {
+                        "Content-Type": "text/uri-list",
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+            } else {
+                await axios.delete(`${lead._links.self.href}/assignedTo`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+            }
+
+            alert("Lead updated successfully!");
+            onClose();
+        } catch (err) {
+            console.error("Update error:", err);
+            alert("Failed to update lead!");
         }
     };
 
@@ -120,7 +134,6 @@ function LeadEditForm({ lead, onClose }) {
                             <label>Business *</label>
                             <input name="business" value={form.business || ""} onChange={handleChange} />
                         </div>
-
                         <div className="form-group">
                             <label>Address</label>
                             <input name="address" value={form.address || ""} onChange={handleChange} />
@@ -132,7 +145,6 @@ function LeadEditForm({ lead, onClose }) {
                             <label>First Name *</label>
                             <input name="firstName" value={form.firstName || ""} onChange={handleChange} />
                         </div>
-
                         <div className="form-group">
                             <label>Last Name *</label>
                             <input name="lastName" value={form.lastName || ""} onChange={handleChange} />
@@ -146,18 +158,16 @@ function LeadEditForm({ lead, onClose }) {
                         </div>
                     </div>
 
-                    {/* Country, State, City, Mobile, Email, GSTIN, Pincode, Website */}
                     <div className="form-row">
                         <div className="form-group">
                             <label>Country</label>
                             <select name="country" value={form.country || ""} onChange={handleChange}>
                                 <option value="">Select Country</option>
-                                {countries.map((c) => (
+                                {countries.map(c => (
                                     <option key={c.isoCode} value={c.isoCode}>{c.name}</option>
                                 ))}
                             </select>
                         </div>
-
                         <div className="form-group">
                             <label>City</label>
                             <input name="city" value={form.city || ""} readOnly />
@@ -169,10 +179,11 @@ function LeadEditForm({ lead, onClose }) {
                             <label>State</label>
                             <select name="state" value={form.state || ""} onChange={handleChange}>
                                 <option value="">Select State</option>
-                                {states.map((s) => <option key={s.name} value={s.name}>{s.name}</option>)}
+                                {states.map(s => (
+                                    <option key={s.isoCode} value={s.name}>{s.name}</option>
+                                ))}
                             </select>
                         </div>
-
                         <div className="form-group">
                             <label>Mobile *</label>
                             <input name="mobile" value={form.mobile || ""} onChange={handleChange} />
@@ -184,30 +195,20 @@ function LeadEditForm({ lead, onClose }) {
                             <label>Email *</label>
                             <input name="email" value={form.email || ""} onChange={handleChange} />
                         </div>
-
                         <div className="form-group">
                             <label>GSTIN</label>
                             <input name="gstin" value={form.gstin || ""} onChange={handleChange} />
                         </div>
                     </div>
 
-
                     <div className="form-row">
                         <div className="form-group">
                             <label>Pincode</label>
                             <input name="pincode" value={form.pincode || ""} onChange={handleChange} />
                         </div>
-
                         <div className="form-group">
                             <label>Website</label>
                             <input name="website" value={form.website || ""} onChange={handleChange} />
-                        </div>
-                    </div>
-
-                    <div className="form-row">
-                        <div className="form-group">
-                            <label>Code</label>
-                            <input name="code" value={form.code || ""} onChange={handleChange} />
                         </div>
                     </div>
 
@@ -221,8 +222,8 @@ function LeadEditForm({ lead, onClose }) {
                                 "Instagram", "Google Search", "Cold Call", "Reference",
                                 "Existing Customer", "WhatsApp", "Email Campaign",
                                 "Field Visit", "Trade Show / Expo", "Partner / Distributor", "Other"
-                            ].map((src, i) => (
-                                <option key={i} value={src}>{src}</option>
+                            ].map(src => (
+                                <option key={src} value={src}>{src}</option>
                             ))}
                         </select>
 
@@ -239,15 +240,15 @@ function LeadEditForm({ lead, onClose }) {
                                 "VMS & CCTV", "VMS", "CCTV", "VMS+CC", "CC", "ACS",
                                 "ITC & Networking", "CCTV & CC", "CCTV & FAS", "Bollards",
                                 "ELV", "AELV", "Networking", "CCTV"
-                            ].map((req, i) => (
-                                <option key={i} value={req}>{req}</option>
+                            ].map(req => (
+                                <option key={req} value={req}>{req}</option>
                             ))}
                         </select>
 
                         <select name="category" value={form.category || ""} onChange={handleChange}>
                             <option value="">Select Category</option>
-                            {["Service", "Product", "Service & Product"].map((cat, i) => (
-                                <option key={i} value={cat}>{cat}</option>
+                            {["Service", "Product", "Service & Product"].map(cat => (
+                                <option key={cat} value={cat}>{cat}</option>
                             ))}
                         </select>
                     </div>
@@ -272,14 +273,10 @@ function LeadEditForm({ lead, onClose }) {
 
                         <div className="form-group">
                             <label>Assigned To</label>
-                            <select
-                                name="assignedTo"
-                                value={form.assignedTo || ""}
-                                onChange={handleChange}
-                            >
+                            <select name="assignedTo" value={form.assignedTo || ""} onChange={handleChange}>
                                 <option value="">Select User</option>
-                                {users.map((u) => (
-                                    <option key={u._links.self.href} value={u._links.self.href}>
+                                {users.map(u => (
+                                    <option key={u.id} value={u.url}>
                                         {u.fullName || u.username}
                                     </option>
                                 ))}
@@ -290,11 +287,10 @@ function LeadEditForm({ lead, onClose }) {
                     <div className="form-row">
                         <select name="stage" value={form.stage || ""} onChange={handleChange}>
                             <option value="">Select Stage</option>
-                            {[
-                                "New", "Discussion", "Demo", "Proposal",
-                                "Decided", "Negotiation", "On Hold", "Lost", "Won"
-                            ].map((stg, i) => (
-                                <option key={i} value={stg}>{stg}</option>
+                            {["New", "Discussion", "Demo", "Proposal",
+                              "Decided", "Negotiation", "On Hold", "Lost", "Won"
+                            ].map(stage => (
+                                <option key={stage} value={stage}>{stage}</option>
                             ))}
                         </select>
 
