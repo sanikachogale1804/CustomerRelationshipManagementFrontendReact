@@ -3,9 +3,13 @@
   margin: 20px auto;
   padding: 20px;
   background: #f8f9fa;
+  
   border-radius: 8px;
   box-shadow: 0 0 12px rgba(0,0,0,0.1);
   font-family: Arial, sans-serif;
+
+  display: block;       /* ensure block layout */
+  overflow: visible;    /* make sure nothing is hidden */
 }
 
 .quotation-form h2 {
@@ -54,7 +58,7 @@
 
 .section-row {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* ✅ ensures items stack if too wide */
   gap: 20px;
   margin-top: 10px;
 }

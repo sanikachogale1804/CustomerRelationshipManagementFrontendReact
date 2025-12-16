@@ -2,11 +2,18 @@ import React, { useEffect, useState } from "react";
 import { getLeads } from "../services/leadService";
 import "../CSS/Leadlist.css";
 import LeadDetailsModal from "./LeadDetailsModal";
+import { useNavigate } from "react-router-dom";
 
 export default function AllLeads() {
   const [leads, setLeads] = useState([]);
   const [selectedLead, setSelectedLead] = useState(null);
 
+  const navigate = useNavigate();
+
+  const handleAddLeadForm = () => {
+    navigate("/leadForm"); // Navigate to Add Lead form
+  }
+  
 
   useEffect(() => {
     getLeads()
@@ -34,20 +41,24 @@ export default function AllLeads() {
     <div className="leads-container">
       {/* ----------- TOP BUTTON ROW ----------- */}
       <div className="top-controls">
-        <button className="filter-btn active">All Active Leads & Prospects</button>
-        <button className="filter-btn">Raw</button>
-        <button className="filter-btn">New</button>
-        <button className="filter-btn">Discussion</button>
-        <button className="filter-btn">Demo</button>
-        <button className="filter-btn">Proposal</button>
-        <button className="filter-btn">Decided</button>
-        <button className="filter-btn">Inactive</button>
+        <h2 className="lead-heading">Leads & Prospects</h2>
+        <div className="top-buttons">
+          <button className="filter-btn active">All Active Leads & Prospects</button>
+          <button className="filter-btn">Raw</button>
+          <button className="filter-btn">New</button>
+          <button className="filter-btn">Discussion</button>
+          <button className="filter-btn">Demo</button>
+          <button className="filter-btn">Proposal</button>
+          <button className="filter-btn">Decided</button>
+          <button className="filter-btn">Inactive</button>
+        </div>
       </div>
+
 
       {/* ---------- SEARCH + ADD BUTTON ---------- */}
       <div className="search-row">
         <input className="search-input" placeholder="Search..." />
-        <button className="add-btn">+ Add Lead</button>
+        <button className="add-btn" onClick={handleAddLeadForm}>+ Add Lead</button>
       </div>
 
       {/* -------------- TABLE ---------------- */}

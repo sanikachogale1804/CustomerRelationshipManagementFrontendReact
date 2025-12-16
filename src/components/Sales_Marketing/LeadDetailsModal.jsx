@@ -121,7 +121,7 @@ function LeadDetailsModal({ lead, onClose }) {
                 <button className="action-btn blue" onClick={goToUpdateStatus}>Update Status</button>
                 <button
                   className="action-btn green"
-                  onClick={() => navigate("/quotationForm")}
+                  onClick={() => navigate("/admin/quotationForm")}
                 >
                   + Quote
                 </button>

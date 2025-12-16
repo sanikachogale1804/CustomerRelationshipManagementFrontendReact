@@ -16,19 +16,35 @@ const QuotationForm = () => {
     reference: "",
     quotationDate: "",
     validTill: "",
+    items: [],
     terms: [""],
     notes: "",
     bankDetails: "",
-    extraCharges: [{ description: "", amount: "" }],
-    discounts: [{ description: "", amount: "" }],
+    uploadedFile: "",
+    nextActions: {
+      saveTemplate: false,
+      shareEmail: false,
+      shareWhatsapp: false,
+      printAfterSaving: false,
+      alertOnOpening: false,
+    },
     total: "",
     grandTotal: "",
-    uploadedFile: ""
+    discounts: [{ description: "", amount: "" }],
+    extraCharges: [{ description: "", amount: "" }],
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleNextActionsChange = (e) => {
+    const { name, checked } = e.target;
+    setFormData({
+      ...formData,
+      nextActions: { ...formData.nextActions, [name]: checked },
+    });
   };
 
   const handleArrayChange = (index, field, value, key) => {
@@ -50,7 +66,7 @@ const QuotationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8080/api/quotation", formData);
+      const response = await axios.post("http://localhost:8080/quotations", formData);
       alert("Quotation Saved Successfully!");
       console.log(response.data);
     } catch (error) {
@@ -58,6 +74,7 @@ const QuotationForm = () => {
       alert("Failed to save quotation");
     }
   };
+
 
   return (
     <form onSubmit={handleSubmit} className="quotation-form">
@@ -121,7 +138,8 @@ const QuotationForm = () => {
       />
 
 
-      {/* Terms */}
+
+      {/* Terms & Conditions */}
       <h3>Terms & Conditions</h3>
       <div className="dynamic-list">
         {formData.terms.map((t, i) => (
@@ -141,50 +159,98 @@ const QuotationForm = () => {
         <button type="button" onClick={() => addRow("terms", "")}>+ Add Term</button>
       </div>
 
-
-      {/* Discounts */}
-      <h3>Discounts</h3>
-      <div className="dynamic-list">
-        {formData.discounts.map((item, i) => (
-          <div key={i}>
-            <input
-              placeholder="Description"
-              value={item.description}
-              onChange={(e) => handleArrayChange(i, "description", e.target.value, "discounts")}
-            />
-            <input
-              placeholder="Amount"
-              value={item.amount}
-              onChange={(e) => handleArrayChange(i, "amount", e.target.value, "discounts")}
-            />
-            <button type="button" onClick={() => removeRow("discounts", i)}>X</button>
-          </div>
-        ))}
-        <button type="button" onClick={() => addRow("discounts", { description: "", amount: "" })}>
-          + Add Discount
-        </button>
-      </div>
-
-      {/* Totals */}
-      <h3>Total Calculation</h3>
-      <div className="section-row">
-        <div className="form-group">
-          <input name="total" placeholder="Total" onChange={handleChange} />
+      {/* Notes & Bank Details */}
+      <h3>Notes & Bank Details</h3>
+      <div className="section-row" style={{ display: "flex", gap: "20px" }}>
+        <div style={{ flex: 1 }}>
+          <label>Notes</label>
+          <textarea
+            name="notes"
+            value={formData.notes}
+            onChange={handleChange}
+            placeholder="Notes"
+          />
         </div>
-        <div className="form-group">
-          <input name="grandTotal" placeholder="Grand Total" onChange={handleChange} />
+        <div style={{ flex: 1 }}>
+          <label>Bank Details</label>
+          <textarea
+            name="bankDetails"
+            value={formData.bankDetails}
+            onChange={handleChange}
+            placeholder="Bank Details"
+          />
         </div>
       </div>
 
-      {/* File Upload */}
+      {/* Upload File */}
       <h3>Upload File</h3>
       <div className="form-group">
-        <input type="text" name="uploadedFile" placeholder="File URL / Path" onChange={handleChange} />
+        <input
+          type="text"
+          name="uploadedFile"
+          placeholder="File URL / Path"
+          value={formData.uploadedFile}
+          onChange={handleChange}
+        />
+        <button type="button" style={{ marginLeft: "10px" }}>Upload File</button>
       </div>
 
-      <button type="submit">Save Quotation</button>
+      {/* Next Actions */}
+      <h3>Next Actions</h3>
+      <div className="next-actions">
+        <label>
+          <input
+            type="checkbox"
+            name="saveTemplate"
+            checked={formData.nextActions.saveTemplate}
+            onChange={handleNextActionsChange}
+          />
+          Save as Template
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            name="shareEmail"
+            checked={formData.nextActions.shareEmail}
+            onChange={handleNextActionsChange}
+          />
+          Share by Email
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            name="shareWhatsapp"
+            checked={formData.nextActions.shareWhatsapp}
+            onChange={handleNextActionsChange}
+          />
+          Share by Whatsapp
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            name="printAfterSaving"
+            checked={formData.nextActions.printAfterSaving}
+            onChange={handleNextActionsChange}
+          />
+          Print Document after Saving
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            name="alertOnOpening"
+            checked={formData.nextActions.alertOnOpening}
+            onChange={handleNextActionsChange}
+          />
+          Alert me on Opening
+        </label>
+      </div>
+
+      {/* Save Buttons */}
+      <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
+        <button type="submit" style={{ backgroundColor: "green", color: "white" }}>Save</button>
+        <button type="button" style={{ backgroundColor: "green", color: "white" }}>Save & Enter Another</button>
+      </div>
     </form>
   );
 };
-
 export default QuotationForm;

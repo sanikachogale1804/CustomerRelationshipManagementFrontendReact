@@ -90,3 +90,11 @@
 .dynamic-list button:hover {
   background: rgb(18, 202, 18);
 }
+
+.form-message {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #f0f0f0;
+  color: #333;
+}

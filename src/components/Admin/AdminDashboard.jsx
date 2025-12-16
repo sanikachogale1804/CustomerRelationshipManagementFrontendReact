@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import '../CSS/Admin.css'
-import logo from '../Images/logo.png'
+import '../CSS/Admin.css';
+import logo from '../Images/logo.png';
 
 export default function AdminDashboard() {
   const [profileOpen, setProfileOpen] = useState(false);
@@ -11,7 +11,7 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
 
   const defaultDepartments = [
-    { name: "Sales & Marketing", route: "SalesMarketing" },
+    { name: "Sales & Marketing", route: "leadList" },
     { name: "Operation & Project", route: "OperationProject" },
     { name: "Human Resource", route: "HR" },
     { name: "Information Technology", route: "IT" },
@@ -20,9 +20,7 @@ export default function AdminDashboard() {
     { name: "Customer Support", route: "CustomerSupport" },
   ];
 
-  // Admin page = /admin, Department page = /admin/department/:name
-  const isAdminPage = location.pathname === "/admin";
-  const isDepartmentPage = location.pathname.startsWith("/admin/department/");
+  const isAdminPage = location.pathname.startsWith("/admin");
 
   return (
     <div className="admin-container">
@@ -34,15 +32,9 @@ export default function AdminDashboard() {
         </div>
 
         <ul className="menu-list">
-          <li className="menu-item">
-            <Link to="">Dashboard</Link>
-          </li>
-          <li className="menu-item">
-            <Link to="reports">Reports</Link>
-          </li>
-          <li className="menu-item">
-            <Link to="settings">Settings</Link>
-          </li>
+          <li className="menu-item"><Link to="">Dashboard</Link></li>
+          <li className="menu-item"><Link to="reports">Reports</Link></li>
+          <li className="menu-item"><Link to="settings">Settings</Link></li>
         </ul>
       </div>
 
@@ -51,36 +43,25 @@ export default function AdminDashboard() {
         {/* TOP BAR */}
         {isAdminPage && (
           <div className="top-bar">
-            {/* Left: Department dropdown */}
             <div className="dept-left-box">
               <label className="dept-label">Department:</label>
               <select
                 className="departments-dropdown"
                 defaultValue=""
-                onChange={(e) => navigate(`department/${e.target.value}`)}
+                onChange={(e) => navigate(`/admin/${e.target.value}`)}
               >
-                <option value="" disabled>
-                  Select Department
-                </option>
+                <option value="" disabled>Select Department</option>
                 {defaultDepartments.map((d, i) => (
-                  <option key={i} value={d.route}>
-                    {d.name}
-                  </option>
+                  <option key={i} value={d.route}>{d.name}</option>
                 ))}
               </select>
             </div>
 
-            {/* Right: Notification + Profile buttons */}
             <div className="top-right">
               <button
                 className="notif-btn"
-                onClick={() => {
-                  setNotifOpen(!notifOpen);
-                  setProfileOpen(false);
-                }}
-              >
-                🔔
-              </button>
+                onClick={() => { setNotifOpen(!notifOpen); setProfileOpen(false); }}
+              >🔔</button>
 
               {notifOpen && (
                 <div className="notif-popup">
@@ -90,10 +71,7 @@ export default function AdminDashboard() {
 
               <button
                 className="profile-btn"
-                onClick={() => {
-                  setProfileOpen(!profileOpen);
-                  setNotifOpen(false);
-                }}
+                onClick={() => { setProfileOpen(!profileOpen); setNotifOpen(false); }}
               >
                 Profile
               </button>

@@ -24,28 +24,59 @@ const AddStockItemForm = () => {
     tags: ""
   });
 
+  const [message, setMessage] = useState(""); // <-- new state for feedback
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios.post("http://localhost:8080/items", form)
-      .then(() => alert("Stock Item Added Successfully"))
-      .catch(err => console.error(err));
+    setMessage(""); // reset previous messages
+    try {
+      const response = await axios.post("http://localhost:8080/items", form);
+      setMessage("Stock Item Added Successfully");
+      console.log(response.data);
+      setForm({
+        itemName: "",
+        code: "",
+        category: "",
+        subCategory: "",
+        quantity: "",
+        unit: "",
+        store: "",
+        importance: "",
+        stdCost: "",
+        purchaseCost: "",
+        stdSalesPrice: "",
+        hsnSac: "",
+        gst: "",
+        description: "",
+        internalNotes: "",
+        minStock: "",
+        leadTime: "",
+        tags: ""
+      }); // clear form
+    } catch (err) {
+      console.error(err);
+      setMessage("Failed to save stock item"); // controlled message
+    }
   };
 
   return (
     <div className="add-stock-item-form">
       <h2>Add Stock Item</h2>
 
+      {message && <div className="form-message">{message}</div>} {/* <-- message popup */}
+
       <form onSubmit={handleSubmit}>
+        {/* form fields */}
         <div className="section-row">
           <div className="form-group">
-            <input name="itemName" placeholder="Item Name" onChange={handleChange} />
+            <input name="itemName" placeholder="Item Name" value={form.itemName} onChange={handleChange} />
           </div>
           <div className="form-group">
-            <input name="code" placeholder="Item Code" onChange={handleChange} />
+            <input name="code" placeholder="Item Code" value={form.code} onChange={handleChange} />
           </div>
         </div>
 

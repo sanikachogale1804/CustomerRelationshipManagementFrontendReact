@@ -4,22 +4,20 @@
   border: 1px solid #ddd;
   border-radius: 6px;
   padding: 20px;
-  max-width: 1200px; /* thoda wide */
+  max-width: 1800px; /* thoda wide */
   margin: 20px auto;
   font-family: Arial, sans-serif;
   box-sizing: border-box; 
-  min-height: 80vh;  /* page ka major height cover kare */
+  min-height: 90vh;  /* page ka major height cover kare */
   display: flex;
   flex-direction: column;
 }
 
-/* Top filter buttons */
 .top-controls {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column; /* heading on top, buttons below */
+  gap: 10px;              /* vertical spacing */
   margin-bottom: 15px;
-  flex-wrap: wrap;
 }
 
 .filter-btn {
@@ -32,6 +30,7 @@
 }
 
 .filter-btn.active {
+
   background-color: #228B22;  /* similar green as Lead-Form submit */
   color: #fff;
   border-color: #196619;
@@ -166,3 +165,4 @@
 .whatsapp-square:hover {
   background-color: #1ca34c;
 }
+
