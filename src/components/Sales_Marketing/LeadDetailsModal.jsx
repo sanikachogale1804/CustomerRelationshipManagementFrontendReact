@@ -119,7 +119,13 @@ function LeadDetailsModal({ lead, onClose }) {
               <div className="actions-row">
                 <button className="action-btn grey" onClick={() => setOpenReassign(true)}>Reassign</button>
                 <button className="action-btn blue" onClick={goToUpdateStatus}>Update Status</button>
-                <button className="action-btn green">+ Quote</button>
+                <button
+                  className="action-btn green"
+                  onClick={() => navigate("/quotationForm")}
+                >
+                  + Quote
+                </button>
+
                 <button className="action-btn green">+ PI</button>
                 <button className="action-btn green">+ Order</button>
                 <button className="action-btn green">+ Invoice</button>

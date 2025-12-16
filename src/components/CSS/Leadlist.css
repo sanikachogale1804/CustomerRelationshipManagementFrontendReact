@@ -1,12 +1,16 @@
 /* Main container */
 .leads-container {
-  background-color: #f8f9f9;  /* same as Lead-Form */
+  background-color: #f8f9f9;
   border: 1px solid #ddd;
   border-radius: 6px;
   padding: 20px;
-  max-width: 1000px;
+  max-width: 1200px; /* thoda wide */
   margin: 20px auto;
   font-family: Arial, sans-serif;
+  box-sizing: border-box; 
+  min-height: 80vh;  /* page ka major height cover kare */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Top filter buttons */

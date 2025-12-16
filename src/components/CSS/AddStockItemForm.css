@@ -1,0 +1,92 @@
+/* Wrapper for Add Stock Item Form */
+.add-stock-item-form {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+}
+
+/* Form title */
+.add-stock-item-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Input, textarea and select styling */
+.add-stock-item-form input,
+.add-stock-item-form textarea,
+.add-stock-item-form select {
+  width: 100%;
+  padding: 8px 10px;
+  margin: 6px 0;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.add-stock-item-form textarea {
+  resize: vertical;
+}
+
+/* Submit button styling */
+.add-stock-item-form button {
+  margin-top: 15px;
+  padding: 10px 16px;
+  background-color: #198754;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.add-stock-item-form button:hover {
+  background-color: #157347;
+}
+
+/* Row of inputs */
+.section-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+/* Each input container */
+.section-row .form-group {
+  flex: 1 1 45%;
+}
+
+/* Dynamic list for tags or extra fields */
+.dynamic-list {
+  margin-top: 10px;
+}
+
+.dynamic-list div {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.dynamic-list input {
+  flex: 1;
+}
+
+.dynamic-list button {
+  background: rgb(6, 194, 6);
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dynamic-list button:hover {
+  background: rgb(18, 202, 18);
+}

@@ -20,6 +20,7 @@ import AuditLogs from "./components/Admin/AuditLogs";
 import SalesMarketing from "./components/Sales_Marketing/SalesMarketing";
 import QuotationForm from "./components/Sales_Marketing/QuotationForm";
 import ItemSelectionPage from "./components/Sales_Marketing/ItemSelectionPage";
+import AddStockItemForm from "./components/Sales_Marketing/AddStockItemForm";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path="/permission" element={<Permission />} />
         <Route path="/quotationForm" element={<QuotationForm />}/>
         <Route path="/select-item" element={<ItemSelectionPage />} />
+        <Route path="/add-stock-item" element={<AddStockItemForm />} />
         <Route path="/admin" element={<AdminDashboard />}>
           <Route path="reports" element={<Reports />} />
           <Route path="settings" element={<Settings />} />
