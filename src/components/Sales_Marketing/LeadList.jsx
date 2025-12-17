@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getLeads } from "../services/leadService";
+import { getLeads, getUserByLink } from "../services/leadService";
 import "../CSS/Leadlist.css";
 import LeadDetailsModal from "./LeadDetailsModal";
 import { useNavigate } from "react-router-dom";
@@ -13,29 +13,39 @@ export default function AllLeads() {
   const handleAddLeadForm = () => {
     navigate("/leadForm"); // Navigate to Add Lead form
   }
-  
 
   useEffect(() => {
     getLeads()
-      .then((res) => {
+      .then(async (res) => {
         const data = res?.data?._embedded?.leads || [];
-        setLeads(data);
+
+        const updatedLeads = await Promise.all(
+          data.map(async (lead) => {
+            const assignedToName = await fetchAssignedUserName(lead);
+            return { ...lead, assignedToName };
+          })
+        );
+
+        setLeads(updatedLeads);
       })
       .catch((err) => console.error("Lead fetch error:", err));
   }, []);
 
-  // Helper to get assignedTo name
-  const getAssignedToName = (assignedTo) => {
-    if (!assignedTo) return "";
-    // If it's a HAL link, you might need to extract numeric ID
-    if (typeof assignedTo === "string" && assignedTo.includes("/")) {
-      return assignedTo.split("/").pop(); // or fetch user name if needed
+  const fetchAssignedUserName = async (lead) => {
+    try {
+      const userLink = lead?._links?.assignedTo?.href;
+      if (!userLink) return "-";
+
+      const res = await getUserByLink(userLink);
+      const user = res.data;
+
+      return user.fullName || user.username || "-";
+    } catch (err) {
+      console.error("Assigned user fetch error", err);
+      return "-";
     }
-    // If it's an object with fullName
-    if (assignedTo.fullName) return assignedTo.fullName;
-    if (assignedTo.username) return assignedTo.username;
-    return assignedTo;
   };
+
 
   return (
     <div className="leads-container">
@@ -66,9 +76,7 @@ export default function AllLeads() {
         <thead>
           <tr>
             <th>Business</th>
-            <th>Name</th>
             <th>Mobile</th>
-            <th>Email</th>
             <th>City</th>
             <th>Source</th>
             <th>Stage</th>
@@ -82,13 +90,11 @@ export default function AllLeads() {
             leads.map((lead, index) => (
               <tr key={index}>
                 <td>{lead.business}</td>
-                <td>{lead.fullName}</td>
                 <td>{lead.mobile}</td>
-                <td>{lead.email}</td>
                 <td>{lead.city}</td>
                 <td>{lead.source || "-"}</td>
                 <td>{lead.stage || "-"}</td>
-                <td>{getAssignedToName(lead.assignedTo) || "-"}</td>
+                <td>{lead.assignedToName || "-"}</td>
                 <td className="action-col">
                   <button
                     className="square-btn edit-square"
