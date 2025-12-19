@@ -37,7 +37,7 @@ function App() {
         <Route path="/leadForm" element={<LeadFom />} />
         <Route path="/lead/:leadId/update-status" element={<LeadStageUpdate />} />
         <Route path="/demo" element={<Demo1 />} />
-        <Route path="/register" element={<Register />} />
+        {/* <Route path="/register" element={<Register />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="/permission" element={<Permission />} />
         {/* <Route path="/quotationForm" element={<QuotationForm />} /> */}
