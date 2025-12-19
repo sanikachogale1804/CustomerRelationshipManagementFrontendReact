@@ -10,10 +10,14 @@
     background: linear-gradient(135deg, #e3f2fd, #ffffff, #bbdefb);
     background-size: 300% 300%;
     animation: bgMove 12s ease infinite;
+
+    min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+
+    align-items: flex-start;  
+    overflow-y: auto;          
+    padding: 40px 0;           
 }
 
 @keyframes bgMove {

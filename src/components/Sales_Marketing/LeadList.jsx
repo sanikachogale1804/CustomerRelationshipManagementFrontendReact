@@ -81,6 +81,8 @@ export default function AllLeads() {
             <th>Source</th>
             <th>Stage</th>
             <th>Assigned To</th>
+            <th>Requirement</th>
+            <th>Notes</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -95,6 +97,8 @@ export default function AllLeads() {
                 <td>{lead.source || "-"}</td>
                 <td>{lead.stage || "-"}</td>
                 <td>{lead.assignedToName || "-"}</td>
+                <td>{lead.requirement}</td>
+                <td>{lead.notes || "-"}</td>
                 <td className="action-col">
                   <button
                     className="square-btn edit-square"

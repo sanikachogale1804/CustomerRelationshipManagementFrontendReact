@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../CSS/Auth.module.css";
+import styles from "../CSS/Register.css";
 import { registerUser } from "../services/userService";
 
 export default function Register() {
